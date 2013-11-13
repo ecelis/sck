@@ -1,2 +1,4 @@
 .*.sw*
+config.log
+config.status
 

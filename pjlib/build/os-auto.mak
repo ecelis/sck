@@ -23,7 +23,7 @@ export TEST_OBJS +=	main.o
 #
 # Additional LDFLAGS for pjlib-test
 #
-export TEST_LDFLAGS +=  -lm -lnsl -lrt -lpthread 
+export TEST_LDFLAGS +=  -lm -lnsl -lrt -lpthread  -lcrypto -lssl
 
 #
 # TARGETS are make targets in the Makefile, to be executed for this given
