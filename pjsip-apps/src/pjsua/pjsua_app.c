@@ -2592,8 +2592,6 @@ static void on_call_state(pjsua_call_id call_id, pjsip_event *e)
 		      call_id));
 	    log_call_dump(call_id);
 	}
-	// TODO quit on disconnect
-	app_destroy();
 
     } else {
 
@@ -3563,15 +3561,13 @@ static void keystroke_help(void)
 
     pjsua_enum_accs(acc_ids, &count);
 
-    /* TODO saend this to log
     printf("Account list:\n");
     for (i=0; i<(int)count; ++i)
 	print_acc_status(acc_ids[i]);
-*/
-    //TODO unused in valkeye print_buddy_list();
+
+    print_buddy_list();
     
     //puts("Commands:");
-    /* TODO unused in valkeye
     puts("+=============================================================================+");
     puts("|       Call Commands:         |   Buddy, IM & Presence:  |     Account:      |");
     puts("|                              |                          |                   |");
@@ -3597,14 +3593,6 @@ static void keystroke_help(void)
 #endif
     puts("|  q  QUIT   L  ReLoad   sleep MS   echo [0|1|txt]     n: detect NAT type     |");
     puts("+=============================================================================+");
-*/
-    // TODO valkeye menu
-    puts("1 - AMBULANCE ");
-    puts("2 - FIRE DEPT.");
-    puts("3 - POLICE ");
-    puts("4 - P. CIVIL");
-    puts("5 - P. MUJER ");
-    puts("");
 
     i = pjsua_call_get_count();
     printf("You have %d active call%s\n", i, (i>1?"s":""));
