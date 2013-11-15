@@ -1,4 +1,4 @@
-export PJDIR := /home/ecelis/Projects/sauron-com-kit
+export PJDIR := /home/valkeye/sauron-com-kit
 include $(PJDIR)/version.mak
 export PJ_DIR := $(PJDIR)
 
@@ -135,7 +135,7 @@ export APP_LDLIBS := -lpjsua-$(TARGET_NAME)\
 	$(APP_THIRD_PARTY_LIBS)\
 	$(APP_THIRD_PARTY_EXT)\
 	-lpj-$(TARGET_NAME)\
-	-lm -lnsl -lrt -lpthread  -lcrypto -lssl
+	-lm -luuid -lnsl -lrt -lpthread 
 export APP_LIB_FILES = $(PJ_DIR)/pjsip/lib/libpjsua-$(LIB_SUFFIX) \
 	$(PJ_DIR)/pjsip/lib/libpjsip-ua-$(LIB_SUFFIX) \
 	$(PJ_DIR)/pjsip/lib/libpjsip-simple-$(LIB_SUFFIX) \
