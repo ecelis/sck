@@ -12,4 +12,14 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
 #
 
+import ConfigParser
+#import io
+
+config = ConfigParser.RawConfigParser()
+#config.readfp(io.BytesIO(config.ini))
+
+db = config.get("database", "name")
+dbuser = config.get("database", "user")
+dbpasswd = config.get("database", "passwd")
+dbhost = config.get("database", "host")
 

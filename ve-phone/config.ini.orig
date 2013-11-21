@@ -1,6 +1,17 @@
 [database]
-user: valkeye
-passwd: eyevalk
+# mysql user
+user: someone
+# mysql password
+passwd: secret
+# mysql host
 host: x.x.x.x
-database: valkeye_db
+# mysql database name
+name: valkeye_db
+[sip]
+# SIP Extension/user
+ext:2002
+# SIP password
+passwd:3y3Ext
+# SIP/PBX server
+srv:192.168.200.40
   
