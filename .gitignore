@@ -2,3 +2,4 @@
 config.log
 config.status
 *.pyc
+ve-phone/config.ini
