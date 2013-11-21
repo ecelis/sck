@@ -15,7 +15,7 @@
 import sys
 import pjsua as pj
 import threading
-import ConfigParser as cp
+#import veconfig
 #import mysql.connector as mysql
 #from mysql.connector import errorcode
 import syslog
@@ -180,7 +180,6 @@ class VeCallCallback(pj.CallCallback):
 try:
     # Create library instance
     lib = pj.Lib()
-    config = cp.RawConfigParser()
     # TODO Connect to DB
     #cnx = mysql.connect(user='valkeye', password='eyevalk', host='localhost',
 	#	    database='valkeye_db')
@@ -196,7 +195,7 @@ try:
     # Create local/user-less account
     # userless 
     #acc = lib.create_account_for_transport(transport)
-    acc = lib.create_account(pj.AccountConfig("192.168.1.71","2002", "3y3Ext1"))
+    acc = lib.create_account(pj.AccountConfig("192.168.200.40","2002", "3y3Ext1"))
     acc_cb = VeAccountCallback(acc)
     acc.set_callback(acc_cb)
     acc_cb.wait()
