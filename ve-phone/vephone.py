@@ -1,4 +1,4 @@
-# ValkEye SIP Phone
+# ValkEye SIP Phone, vephone.py
 # Ernesto Celis <developer@celisdelafuente.net>
 # Nov. 2013
 #
