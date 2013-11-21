@@ -1,4 +1,4 @@
 .*.sw*
 config.log
 config.status
-
+*.pyc
