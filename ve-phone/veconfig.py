@@ -13,13 +13,46 @@
 #
 
 import ConfigParser
-#import io
+import os
+import MySQLdb as db
 
-config = ConfigParser.RawConfigParser()
-#config.readfp(io.BytesIO(config.ini))
 
-db = config.get("database", "name")
-dbuser = config.get("database", "user")
-dbpasswd = config.get("database", "passwd")
-dbhost = config.get("database", "host")
+def get_address_book():
+    dbname = config.get("database", "name")
+    dbuser = config.get("database", "user")
+    dbpasswd = config.get("database", "passwd")
+    dbhost = config.get("database", "host")
+    # TODO Make it DB agnostic
+    query = ("SELECT extension,caller FROM address_book")
+    conn = db.connect(user=dbuser, passwd=dbpasswd, host=dbhost,
+        db=dbname)
+    cursor = conn.cursor()
+    cursor.execute(query)
+    data = cursor.fetchall()
+    address_book = dict((str(ext),cid) for ext,cid in data)
+    return address_book
+
+
+def get_sipcfg():
+    ext = config.get("sip", "ext")
+    srv = config.get("sip", "srv")
+    pwd = config.get("sip", "passwd")
+    sipcfg = dict([('ext', ext), ('srv', srv), ('pwd', pwd)])
+    return sipcfg
+
+
+def get_speed_dial():
+    speed_dial = dict([('ambulance', config.get('speeddial','ambulance')),
+        ('firedept', config.get('speeddial','firedept')),
+	('police', config.get('speeddial','police')),
+	('civilprot', config.get('speeddial','civilprot')),
+	('women', config.get('speeddial','women')),])
+    return speed_dial
+    
+try:
+    config = ConfigParser.RawConfigParser()
+    config.read(os.path.expanduser('~/sauron-com-kit/ve-phone/config.ini'))
+finally:
+    pass
+
 
