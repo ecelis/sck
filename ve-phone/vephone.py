@@ -15,9 +15,7 @@
 import sys
 import pjsua as pj
 import threading
-#import veconfig
-#import mysql.connector as mysql
-#from mysql.connector import errorcode
+import veconfig
 import syslog
 
 # Logging callback
@@ -28,41 +26,37 @@ def log_cb(level, str, len):
 def main_loop():
     while True:
 	syslog.syslog(syslog.LOG_INFO, "Ready!")
-	#TODO Nobody is going to see the menu, so get rid of it
-        #print "1 AMBULANCE"
-	#print "2 FIRE DEPARTMENT"
-	#print "3 POLICE"
-	#print "4 C. PROTECTION"
-	#print "5 WOMEN SERVICES"
-	#print ""
-        #print "Press <ENTER> to quit"
         # TODO Put the addressbook in DB       
+        
 	try:
             getch = _Getch()
             choice = getch()
-	    if choice == "1":
+	    if choice == speed_dial['ambulance']:
 		syslog.syslog(syslog.LOG_INFO, "Dial AMBULANCE")
 		# TODO catch exceptions and send those to syslog
-		call = acc.make_call("sip:1001@172.20.10.35", VeCallCallback())
-            elif choice == "2":
+		# TODO you screwed it! fix the SIP URL
+		#call = acc.make_call("sip:1001@172.20.10.35", VeCallCallback())
+		#call = acc.make_call("sip:"+address_book['1001']+"@"+sipcfg['srv'], VeCallCallback())
+		call = acc.make_call("sip:1001@"+sipcfg['srv'], VeCallCallback())
+            elif choice == speed_dial['firedept']:
 		syslog.syslog(syslog.LOG_INFO,"Dial FIRE DEPT")
-		call = acc.make_call("1001@172.20.10.35", VeCallCallback())
-	    elif choice == "3":
+		call = acc.make_call("sip:1001@"+sipcfg['srv'], VeCallCallback())
+	    elif choice == speed_dial['police']:
 		syslog.syslog(syslog.LOG_INFO,"Dial POLICE")
-		call = acc.make_call("sip:1001@172.20.10.35", VeCallCallback())
-	    elif choice == "4":
+		call = acc.make_call("sip:1001@"+sipcfg['srv'], VeCallCallback())
+	    elif choice == speed_dial['civilprot']:
 		syslog.syslog(syslog.LOG_INFO,"Dial C. PROTECTION")
-		call = acc.make_call("sip:1001@172.20.10.35", VeCallCallback())
-	    elif choice == "5":
+		call = acc.make_call("sip:1001@"+sipcfg['srv'], VeCallCallback())
+	    elif choice == speed_dial['women']:
 		syslog.syslog(syslog.LOG_INFO,"Dial WOMEN")
-		call = acc.make_call("sip:1001@172.20.10.35", VeCallCallback())
+		call = acc.make_call("sip:1001@"+sipcfg['srv'], VeCallCallback())
 	    elif choice == "*":
 		syslog.syslog(syslog.LOG_INFO,"Dial LOCAL MIC")
                 call = acc.make_call("sip:1001@172.20.10.35", VeCallCallback())
 	    elif choice == "T":
 		# Test only option, do not use it for real services!
 		syslog.syslog(syslog.LOG_INFO,"Dial TEST")
-		call = acc.make_call("sip:1001@192.168.1.71", VeCallCallback())
+		call = acc.make_call("sip:1001@192.168.200.40", VeCallCallback())
 	    elif choice == "Q":
 		syslog.syslog(syslog.LOG_NOTICE,"Exit on user request!")
 		sys.exit(0)
@@ -76,10 +70,9 @@ def main_loop():
 
 	    #return choice
 
-
-class _Getch:
-    """Gets a single character from standard input.  Does not echo to the
+"""Gets a single character from standard input.  Does not echo to the
 screen."""
+class _Getch:
     def __init__(self):
         try:
             self.impl = _GetchWindows()
@@ -139,15 +132,10 @@ class VeAccountCallback(pj.AccountCallback):
         current_call = call
 	call_cb = VeCallCallback(current_call)
 	current_call.set_callback(call_cb)
-	#current_call.answer(180)
 
 	if current_call:
 	    call.answer(200)
 	    return
-
-        #if not current_call:
-	#    current_call.answer(200)
-
         
 
 # Callback to receive events from Call
@@ -164,7 +152,7 @@ class VeCallCallback(pj.CallCallback):
 
 	if self.call.info().state == pj.CallState.DISCONNECTED:
             current_call = None
-	    #TODO syslog.syslog(syslog.LOG_INFO, "Current call is " + current_call
+	    syslog.syslog(syslog.LOG_INFO,"Call DISCONNECTED")
 
     # Notification when call's media state changed
     def on_media_state(self):
@@ -180,12 +168,11 @@ class VeCallCallback(pj.CallCallback):
 try:
     # Create library instance
     lib = pj.Lib()
-    # TODO Connect to DB
-    #cnx = mysql.connect(user='valkeye', password='eyevalk', host='localhost',
-	#	    database='valkeye_db')
-    #cursor = cnx.cursor()
-    #query = ("SELECT ext FROM adress_book")
-    #cursor.execute(query)
+    address_book = veconfig.get_address_book()
+    speed_dial = veconfig.get_speed_dial()
+    # Get PBX/SIP username/extension, PBX server and password
+    _sipcfg = veconfig.get_sipcfg()
+    sipcfg = dict((k,v) for k,v in _sipcfg.iteritems())
     # Init library with default config
     lib.init(log_cfg = pj.LogConfig(level=3, callback=log_cb))
     # Create UDP transport which listens to any available port
@@ -195,7 +182,9 @@ try:
     # Create local/user-less account
     # userless 
     #acc = lib.create_account_for_transport(transport)
-    acc = lib.create_account(pj.AccountConfig("192.168.200.40","2002", "3y3Ext1"))
+    # Register on PBX
+    acc = lib.create_account(pj.AccountConfig(sipcfg['srv'], sipcfg['ext'], 
+	sipcfg['pwd']))
     acc_cb = VeAccountCallback(acc)
     acc.set_callback(acc_cb)
     acc_cb.wait()
