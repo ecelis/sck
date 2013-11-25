@@ -14,45 +14,58 @@
 
 import ConfigParser
 import os
+import syslog
 import MySQLdb as db
 
 
 def get_address_book():
-    dbname = config.get("database", "name")
-    dbuser = config.get("database", "user")
-    dbpasswd = config.get("database", "passwd")
-    dbhost = config.get("database", "host")
-    # TODO Make it DB agnostic
-    query = ("SELECT extension,caller FROM address_book")
-    conn = db.connect(user=dbuser, passwd=dbpasswd, host=dbhost,
-        db=dbname)
-    cursor = conn.cursor()
-    cursor.execute(query)
-    data = cursor.fetchall()
-    address_book = dict((str(ext),cid) for ext,cid in data)
-    return address_book
-
+    try:
+        dbname = config.get("database", "name")
+        dbuser = config.get("database", "user")
+        dbpasswd = config.get("database", "passwd")
+        dbhost = config.get("database", "host")
+        # TODO Make it DB agnostic
+        query = ("SELECT extension,caller FROM address_book")
+        conn = db.connect(user=dbuser, passwd=dbpasswd, host=dbhost,
+            db=dbname)
+        cursor = conn.cursor()
+        cursor.execute(query)
+        data = cursor.fetchall()
+        address_book = dict((str(ext),cid) for ext,cid in data)
+        return address_book
+    except:
+	syslog.syslog(syslog.LOG_ERR, "Config Address Book Error," )
+        pass
 
 def get_sipcfg():
-    ext = config.get("sip", "ext")
-    srv = config.get("sip", "srv")
-    pwd = config.get("sip", "passwd")
-    sipcfg = dict([('ext', ext), ('srv', srv), ('pwd', pwd)])
-    return sipcfg
+    try:
+        ext = config.get("sip", "ext")
+        srv = config.get("sip", "srv")
+        pwd = config.get("sip", "passwd")
+        sipcfg = dict([('ext', ext), ('srv', srv), ('pwd', pwd)])
+        return sipcfg
+    except:
+	syslog.syslog(syslog.LOG_ERR,"Config SIP Account Error,")
+	pass
 
 
 def get_speed_dial():
-    speed_dial = dict([('ambulance', config.get('speeddial','ambulance')),
-        ('firedept', config.get('speeddial','firedept')),
-	('police', config.get('speeddial','police')),
-	('civilprot', config.get('speeddial','civilprot')),
-	('women', config.get('speeddial','women')),])
-    return speed_dial
+    try:
+        speed_dial = dict([('ambulance', config.get('speeddial','ambulance')),
+            ('firedept', config.get('speeddial','firedept')),
+	    ('police', config.get('speeddial','police')),
+	    ('civilprot', config.get('speeddial','civilprot')),
+	    ('women', config.get('speeddial','women')),])
+        return speed_dial
+    except:
+	syslog.syslog(syslog.LOG_ERR, "Speed Dial Error,")
+	pass
     
 try:
     config = ConfigParser.RawConfigParser()
     config.read(os.path.expanduser('~/sauron-com-kit/ve-phone/config.ini'))
-finally:
+except:
+    syslog.syslog(syslog.LOG_ERR, "Config Error,")
     pass
 
 
