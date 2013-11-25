@@ -25,13 +25,14 @@ def get_address_book():
         dbpasswd = config.get("database", "passwd")
         dbhost = config.get("database", "host")
         # TODO Make it DB agnostic
-        query = ("SELECT extension,caller FROM address_book")
+        query = ("SELECT id,extension,cid FROM address_book")
         conn = db.connect(user=dbuser, passwd=dbpasswd, host=dbhost,
             db=dbname)
         cursor = conn.cursor()
         cursor.execute(query)
         data = cursor.fetchall()
-        address_book = dict((str(ext),cid) for ext,cid in data)
+        address_book = dict((id,(str(extension),cid)) for id,extension,cid in data)
+	print address_book
         return address_book
     except:
 	syslog.syslog(syslog.LOG_ERR, "Config Address Book Error," )
@@ -49,18 +50,6 @@ def get_sipcfg():
 	pass
 
 
-def get_speed_dial():
-    try:
-        speed_dial = dict([('ambulance', config.get('speeddial','ambulance')),
-            ('firedept', config.get('speeddial','firedept')),
-	    ('police', config.get('speeddial','police')),
-	    ('civilprot', config.get('speeddial','civilprot')),
-	    ('women', config.get('speeddial','women')),])
-        return speed_dial
-    except:
-	syslog.syslog(syslog.LOG_ERR, "Speed Dial Error,")
-	pass
-    
 try:
     config = ConfigParser.RawConfigParser()
     config.read(os.path.expanduser('~/sauron-com-kit/ve-phone/config.ini'))
