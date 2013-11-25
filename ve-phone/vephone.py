@@ -190,15 +190,23 @@ try:
     if not _sipcfg == None:
         sipcfg = dict((k,v) for k,v in _sipcfg.iteritems())
         # Create UDP transport which listens to any available port
+    sipcfg = None
+    if not _sipcfg == None:
+        sipcfg = dict((k,v) for k,v in _sipcfg.iteritems())
+    # Init library with default config
+    lib.init(log_cfg = pj.LogConfig(level=3, callback=log_cb))
+    # Create UDP transport which listens to any available port
     transport = lib.create_transport(pj.TransportType.UDP)
     # Start the library
     lib.start()
-    # Create local/user-less account
-    # userless 
-    #acc = lib.create_account_for_transport(transport)
-    # Register on PBX
-    acc = lib.create_account(pj.AccountConfig(sipcfg['srv'], sipcfg['ext'], 
-	sipcfg['pwd']))
+    if sipcfg == None:
+        # Create local/user-less account
+        acc = lib.create_account_for_transport(transport)
+    else:
+        # Register on PBX
+        acc = lib.create_account(pj.AccountConfig(sipcfg['srv'], sipcfg['ext'], 
+	    sipcfg['pwd']))
+
     acc_cb = VeAccountCallback(acc)
     acc.set_callback(acc_cb)
     acc_cb.wait()
