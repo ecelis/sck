@@ -18,9 +18,11 @@ import threading
 import veconfig
 import syslog
 
+
+LOG_LEVEL = 3
 # Logging callback
 def log_cb(level, str, len):
-    print str,
+    syslog.syslog(syslog.LOG_INFO,str),
 
 
 def main_loop():
@@ -133,9 +135,18 @@ class VeAccountCallback(pj.AccountCallback):
 	call_cb = VeCallCallback(current_call)
 	current_call.set_callback(call_cb)
 
-	if current_call:
-	    call.answer(200)
-	    return
+        #TODO too drunk to handle call states, do it later
+	"""if current_call:
+	    call.answer(486, "Busy")
+	    return"""
+        
+        syslog.syslog(syslog.LOG_INFO, "Incoming call from "
+	    + call.info().remote_uri)
+
+	current_call = call
+	call_cb = VeCallCallback(current_call)
+	current_call.set_callback(call_cb)
+	current_call.answer(200)
         
 
 # Callback to receive events from Call
@@ -168,14 +179,17 @@ class VeCallCallback(pj.CallCallback):
 try:
     # Create library instance
     lib = pj.Lib()
+    # Init library with default config
+    stereo = 2
+    lib.init(log_cfg = pj.LogConfig(level=LOG_LEVEL, callback=log_cb),
+	media_cfg = pj.MediaConfig(channel_count=stereo))
     address_book = veconfig.get_address_book()
     speed_dial = veconfig.get_speed_dial()
     # Get PBX/SIP username/extension, PBX server and password
     _sipcfg = veconfig.get_sipcfg()
-    sipcfg = dict((k,v) for k,v in _sipcfg.iteritems())
-    # Init library with default config
-    lib.init(log_cfg = pj.LogConfig(level=3, callback=log_cb))
-    # Create UDP transport which listens to any available port
+    if not _sipcfg == None:
+        sipcfg = dict((k,v) for k,v in _sipcfg.iteritems())
+        # Create UDP transport which listens to any available port
     transport = lib.create_transport(pj.TransportType.UDP)
     # Start the library
     lib.start()
