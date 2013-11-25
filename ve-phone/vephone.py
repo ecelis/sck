@@ -30,35 +30,25 @@ def main_loop():
 	syslog.syslog(syslog.LOG_INFO, "Ready!")
         # TODO Put the addressbook in DB       
         
+
+
 	try:
             getch = _Getch()
             choice = getch()
-	    if choice == speed_dial['ambulance']:
-		syslog.syslog(syslog.LOG_INFO, "Dial AMBULANCE")
-		# TODO catch exceptions and send those to syslog
-		# TODO you screwed it! fix the SIP URL
-		#call = acc.make_call("sip:1001@172.20.10.35", VeCallCallback())
-		#call = acc.make_call("sip:"+address_book['1001']+"@"+sipcfg['srv'], VeCallCallback())
-		call = acc.make_call("sip:1001@"+sipcfg['srv'], VeCallCallback())
-            elif choice == speed_dial['firedept']:
-		syslog.syslog(syslog.LOG_INFO,"Dial FIRE DEPT")
-		call = acc.make_call("sip:1001@"+sipcfg['srv'], VeCallCallback())
-	    elif choice == speed_dial['police']:
-		syslog.syslog(syslog.LOG_INFO,"Dial POLICE")
-		call = acc.make_call("sip:1001@"+sipcfg['srv'], VeCallCallback())
-	    elif choice == speed_dial['civilprot']:
-		syslog.syslog(syslog.LOG_INFO,"Dial C. PROTECTION")
-		call = acc.make_call("sip:1001@"+sipcfg['srv'], VeCallCallback())
-	    elif choice == speed_dial['women']:
-		syslog.syslog(syslog.LOG_INFO,"Dial WOMEN")
-		call = acc.make_call("sip:1001@"+sipcfg['srv'], VeCallCallback())
-	    elif choice == "*":
+            for c in address_book:
+		# address_book = {'1': ('1001', 'AMBULANCE'), ...}
+		if choice == c:
+		    syslog.syslog(syslog.LOG_INFO, "Dial " + address_book[c][1])
+		    call = acc.make_call("sip:"+address_book[c][0]+"@"+sipcfg['srv'], VeCallCallback())
+
+	    if choice == "*":
 		syslog.syslog(syslog.LOG_INFO,"Dial LOCAL MIC")
-                call = acc.make_call("sip:1001@172.20.10.35", VeCallCallback())
+		# TODO
+		pass
 	    elif choice == "T":
 		# Test only option, do not use it for real services!
 		syslog.syslog(syslog.LOG_INFO,"Dial TEST")
-		call = acc.make_call("sip:1001@192.168.200.40", VeCallCallback())
+		call = acc.make_call("sip:1106@sip.sdf.org", VeCallCallback())
 	    elif choice == "Q":
 		syslog.syslog(syslog.LOG_NOTICE,"Exit on user request!")
 		sys.exit(0)
@@ -70,7 +60,6 @@ def main_loop():
             syslog.syslog(syslog.LOG_NOTICE,"Invalid input, this is weird!")
 	    continue
 
-	    #return choice
 
 """Gets a single character from standard input.  Does not echo to the
 screen."""
@@ -177,24 +166,17 @@ class VeCallCallback(pj.CallCallback):
 
 
 try:
-    # Create library instance
-    lib = pj.Lib()
-    # Init library with default config
-    stereo = 2
-    lib.init(log_cfg = pj.LogConfig(level=LOG_LEVEL, callback=log_cb),
-	media_cfg = pj.MediaConfig(channel_count=stereo))
-    address_book = veconfig.get_address_book()
-    speed_dial = veconfig.get_speed_dial()
     # Get PBX/SIP username/extension, PBX server and password
+    sipcfg = None
     _sipcfg = veconfig.get_sipcfg()
     if not _sipcfg == None:
         sipcfg = dict((k,v) for k,v in _sipcfg.iteritems())
-        # Create UDP transport which listens to any available port
-    sipcfg = None
-    if not _sipcfg == None:
-        sipcfg = dict((k,v) for k,v in _sipcfg.iteritems())
+    # Get address book
+    address_book = veconfig.get_address_book()
+    # Create library instance
+    lib = pj.Lib()
     # Init library with default config
-    lib.init(log_cfg = pj.LogConfig(level=3, callback=log_cb))
+    lib.init(log_cfg = pj.LogConfig(level=LOG_LEVEL, callback=log_cb))
     # Create UDP transport which listens to any available port
     transport = lib.create_transport(pj.TransportType.UDP)
     # Start the library
@@ -204,7 +186,9 @@ try:
         acc = lib.create_account_for_transport(transport)
     else:
         # Register on PBX
-        acc = lib.create_account(pj.AccountConfig(sipcfg['srv'], sipcfg['ext'], 
+        acc = lib.create_account(
+	    pj.AccountConfig(sipcfg['srv'], 
+	    sipcfg['ext'], 
 	    sipcfg['pwd']))
 
     acc_cb = VeAccountCallback(acc)
