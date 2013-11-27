@@ -135,7 +135,6 @@ class VeCallCallback(pj.CallCallback):
 try:
     # Get PBX/SIP username/extension, PBX server and password
     sipcfg = veconfig.get_sipcfg()
-    
     # Get address book
     address_book = veconfig.get_address_book()
     # Create library instance
