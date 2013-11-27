@@ -135,7 +135,7 @@ export APP_LDLIBS := -lpjsua-$(TARGET_NAME)\
 	$(APP_THIRD_PARTY_LIBS)\
 	$(APP_THIRD_PARTY_EXT)\
 	-lpj-$(TARGET_NAME)\
-	-lm -luuid -lnsl -lrt -lpthread 
+	-lm -luuid -lnsl -lrt -lpthread  -lcrypto -lssl
 export APP_LIB_FILES = $(PJ_DIR)/pjsip/lib/libpjsua-$(LIB_SUFFIX) \
 	$(PJ_DIR)/pjsip/lib/libpjsip-ua-$(LIB_SUFFIX) \
 	$(PJ_DIR)/pjsip/lib/libpjsip-simple-$(LIB_SUFFIX) \
