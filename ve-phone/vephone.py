@@ -120,7 +120,12 @@ class VeCallCallback(pj.CallCallback):
         syslog.syslog(syslog.LOG_INFO, "last code = " + str(self.call.info().last_code))
         syslog.syslog(syslog.LOG_INFO, "(" + self.call.info().last_reason + ")")
 
-	if self.call.info().state == pj.CallState.DISCONNECTED:
+        global call_state
+	call_state = self.call.info.state
+
+	if call_state == pj.CallState.EARLY:
+	    tone.one_ring()
+	elif call_state == pj.CallState.DISCONNECTED:
             current_call = None
 
     # Notification when call's media state changed
@@ -140,7 +145,6 @@ try:
     address_book = veconfig.get_address_book()
     # Create audio tones instance
     tone = vetone.Tone()
-    tone.one_ring()
     # Create library instance
     lib = pj.Lib()
     # Init library with default config
