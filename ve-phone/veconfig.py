@@ -38,11 +38,15 @@ def get_address_book():
         pass
 
 def get_sipcfg():
+    sipcfg = None
     try:
         ext = config.get("sip", "ext")
         srv = config.get("sip", "srv")
         pwd = config.get("sip", "passwd")
-        sipcfg = dict([('ext', ext), ('srv', srv), ('pwd', pwd)])
+        _sipcfg = dict([('ext', ext), ('srv', srv), ('pwd', pwd)])
+        if not _sipcfg == None:
+            sipcfg = dict((k,v) for k,v in _sipcfg.iteritems())
+
         return sipcfg
     except:
 	syslog.syslog(syslog.LOG_ERR,"Config SIP Account Error,")
