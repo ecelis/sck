@@ -15,9 +15,8 @@
 import sys
 import pjsua as pj
 import threading
-import veconfig
 import syslog
-
+import veconfig
 
 LOG_LEVEL = 3
 # Logging callback
@@ -28,80 +27,56 @@ def log_cb(level, str, len):
 def main_loop():
     while True:
 	syslog.syslog(syslog.LOG_INFO, "Ready!")
-        # TODO Put the addressbook in DB       
-        
-
-
 	try:
             getch = _Getch()
             choice = getch()
+	    # Search the address book first, it only handles 0 to 1
             for c in address_book:
 		# address_book = {'1': ('1001', 'AMBULANCE'), ...}
 		if choice == c:
-		    syslog.syslog(syslog.LOG_INFO, "Dial " + address_book[c][1])
-		    call = acc.make_call("sip:"+address_book[c][0]+"@"+sipcfg['srv'], VeCallCallback())
-
+		    uri = "sip:"+address_book[c][0]+"@"+sipcfg['srv']
+		    syslog.syslog(syslog.LOG_INFO, "Dial " + 
+			str(c) + " " +
+		        address_book[c][1])
+		    make_call(uri)
+            # Special options are handled by *,-,+ and / characters
 	    if choice == "*":
-		syslog.syslog(syslog.LOG_INFO,"Dial LOCAL MIC")
+	        # * enable local audio
+		syslog.syslog(syslog.LOG_INFO," Enable Local MIC")
 		# TODO
-		pass
-	    elif choice == "T":
+	    elif choice == "+":
 		# Test only option, do not use it for real services!
 		syslog.syslog(syslog.LOG_INFO,"Dial TEST")
-		call = acc.make_call("sip:1106@sip.sdf.org", VeCallCallback())
-	    elif choice == "Q":
+		make_call("sip:1106@sip.sdf.org")
+	    elif choice == "-":
+		# TODO
+		pass
+	    elif choice == "/":
+		# Exit manually
 		syslog.syslog(syslog.LOG_NOTICE,"Exit on user request!")
-		sys.exit(0)
+		return
 	    else:
+		# anything else shouldn't be valid
 		syslog.syslog(syslog.LOG_NOTICE,"Invalid input, this is weird!")
-		pass 
 
 	except ValueError:
             syslog.syslog(syslog.LOG_NOTICE,"Invalid input, this is weird!")
 	    continue
 
 
-"""Gets a single character from standard input.  Does not echo to the
-screen."""
-class _Getch:
-    def __init__(self):
-        try:
-            self.impl = _GetchWindows()
-        except ImportError:
-            self.impl = _GetchUnix()
-
-    def __call__(self): return self.impl()
+def make_call(uri):
+    try:
+        syslog.syslog(syslog.LOG_INFO, "("+uri+")")
+        call = acc.make_call(uri, VeCallCallback())
+	return call
+    except pj.Error, e:
+	syslog.syslog(syslog.LOG_ERR, str(e))
+	return None
 
 
-class _GetchUnix:
-    def __init__(self):
-        import tty, sys
-
-    def __call__(self):
-        import sys, tty, termios
-        fd = sys.stdin.fileno()
-        old_settings = termios.tcgetattr(fd)
-        try:
-            tty.setraw(sys.stdin.fileno())
-            ch = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-        return ch
-
-""" Maybe I'll never use the windows class, but still useful to get it
-in here, just in case, taken from:
-http://code.activestate.com/recipes/134892-getch-like-unbuffered-character-reading-from-stdin/ """
-class _GetchWindows:
-    def __init__(self):
-        import msvcrt
-
-    def __call__(self):
-        import msvcrt
-        return msvcrt.getch()
-
-
-# Callback for handling registration
+""" Callback for handling registration """
 class VeAccountCallback(pj.AccountCallback):
+    
     sem = None
 
     def __init__(self, account):
@@ -119,40 +94,37 @@ class VeAccountCallback(pj.AccountCallback):
 
     def on_incoming_call(self, call):
 	#TODO A lot of stuff, call handling mainly and logging also
+        syslog.syslog(syslog.LOG_INFO, "Incoming call from "
+	    + call.info().remote_uri)
 	global current_call
+        if current_call:
+	    call.answer(486, "Busy")
+	    syslog.syslog(syslog.LOG_INFO, "Line Busy")
+	    return
+
         current_call = call
 	call_cb = VeCallCallback(current_call)
 	current_call.set_callback(call_cb)
-
-        #TODO too drunk to handle call states, do it later
-	"""if current_call:
-	    call.answer(486, "Busy")
-	    return"""
-        
-        syslog.syslog(syslog.LOG_INFO, "Incoming call from "
-	    + call.info().remote_uri)
-
-	current_call = call
-	call_cb = VeCallCallback(current_call)
-	current_call.set_callback(call_cb)
-	current_call.answer(200)
+	 
+	if not current_call:
+	    current_call.answer(200)
         
 
-# Callback to receive events from Call
+""" Class to receive events from Call """
 class VeCallCallback(pj.CallCallback):
+
     def __init__(self, call=None):
         pj.CallCallback.__init__(self, call)
 
-    # Notification when call sate has changed
+    """ Notification when call sate has changed """
     def on_state(self):
 	global current_call
         syslog.syslog(syslog.LOG_INFO,"Call is " + self.call.info().state_text)
-        syslog.syslog(syslog.LOG_INFO, "last code =" + str(self.call.info().last_code))
+        syslog.syslog(syslog.LOG_INFO, "last code = " + str(self.call.info().last_code))
         syslog.syslog(syslog.LOG_INFO, "(" + self.call.info().last_reason + ")")
 
 	if self.call.info().state == pj.CallState.DISCONNECTED:
             current_call = None
-	    syslog.syslog(syslog.LOG_INFO,"Call DISCONNECTED")
 
     # Notification when call's media state changed
     def on_media_state(self):
@@ -162,7 +134,47 @@ class VeCallCallback(pj.CallCallback):
             call_slot = self.call.info().conf_slot
             lib.conf_connect(call_slot, 0)
             lib.conf_connect(0, call_slot)
-            syslog.syslog(syslog.LOG_INFO,"Active call media state")
+
+
+class _GetchUnix:
+    def __init__(self):
+        import tty, sys
+
+    def __call__(self):
+        import sys, tty, termios
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(sys.stdin.fileno())
+            ch = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        return ch
+
+
+"""Gets a single character from standard input.  Does not echo to the
+screen."""
+class _Getch:
+    def __init__(self):
+        try:
+            self.impl = _GetchWindows()
+        except ImportError:
+            self.impl = _GetchUnix()
+
+    def __call__(self): 
+	return self.impl()
+
+
+""" Maybe I'll never use the windows class, but still useful to get it
+in here, just in case, taken from:
+http://code.activestate.com/recipes/134892-getch-like-unbuffered-character-reading-from-stdin/ """
+class _GetchWindows:
+    def __init__(self):
+        import msvcrt
+
+    def __call__(self):
+        import msvcrt
+        return msvcrt.getch()
 
 
 try:
@@ -190,20 +202,21 @@ try:
 	    pj.AccountConfig(sipcfg['srv'], 
 	    sipcfg['ext'], 
 	    sipcfg['pwd']))
-
+    # Set the account call back
     acc_cb = VeAccountCallback(acc)
     acc.set_callback(acc_cb)
     acc_cb.wait()
     # main loop
+    tone = lib.create_player(filename='./tone.wav',loop=True)
+    lib.conf_connect(tone,0)
     main_loop()
     # We're done, shutdown the library
     lib.destroy()
     lib = None
+    sys.exit(0)
 
 except pj.Error, e:
     syslog.syslog(syslog.LOG_ERR,"Exception: " + str(e))
     lib.destroy()
     lib = None
     sys.exit(1)
-
-
