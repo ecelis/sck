@@ -170,8 +170,6 @@ try:
     acc.set_callback(acc_cb)
     acc_cb.wait()
     # main loop
-    tone = lib.create_player(filename='./tone.wav',loop=True)
-    lib.conf_connect(tone,0)
     main_loop()
     # We're done, shutdown the library
     lib.destroy()
