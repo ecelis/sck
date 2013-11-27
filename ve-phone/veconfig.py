@@ -51,7 +51,7 @@ def get_sipcfg():
 
 try:
     config = ConfigParser.RawConfigParser()
-    config.read([os.path.expanduser('~/settings/config.ini')],
+    config.read([os.path.expanduser('~/settings/config.ini'),
         os.path.expanduser('~/sauron-com-kit/ve-phone/config.ini'),
 	'config.ini']
     )
