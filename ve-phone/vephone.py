@@ -134,10 +134,8 @@ class VeCallCallback(pj.CallCallback):
 
 try:
     # Get PBX/SIP username/extension, PBX server and password
-    sipcfg = None
-    _sipcfg = veconfig.get_sipcfg()
-    if not _sipcfg == None:
-        sipcfg = dict((k,v) for k,v in _sipcfg.iteritems())
+    sipcfg = veconfig.get_sipcfg()
+    
     # Get address book
     address_book = veconfig.get_address_book()
     # Create library instance
