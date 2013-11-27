@@ -99,10 +99,10 @@ class VeAccountCallback(pj.AccountCallback):
         syslog.syslog(syslog.LOG_INFO, "Incoming call from "
 	    + call.info().remote_uri)
 	global current_call
-        if current_call:
-	    call.answer(486, "Busy")
-	    syslog.syslog(syslog.LOG_INFO, "Line Busy")
-	    return
+        #if current_call:
+	#    call.answer(486, "Busy")
+	#    syslog.syslog(syslog.LOG_INFO, "Line Busy")
+	#    return
 
         current_call = call
 	call_cb = VeCallCallback(current_call)
@@ -136,8 +136,6 @@ class VeCallCallback(pj.CallCallback):
             call_slot = self.call.info().conf_slot
             lib.conf_connect(call_slot, 0)
             lib.conf_connect(0, call_slot)
-
-
 
 
 try:
