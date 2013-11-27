@@ -124,10 +124,11 @@ class VeCallCallback(pj.CallCallback):
         global call_state
 	call_state = self.call.info().state
 
+        global tone
 	if call_state == pj.CallState.EARLY:
-	    VeTone().ring()
-	    pass
+	    tone = VeTone().ring_start()
 	elif call_state == pj.CallState.DISCONNECTED:
+	    VeTone().ring_stop(tone)
             current_call = None
 
     # Notification when call's media state changed
@@ -140,15 +141,17 @@ class VeCallCallback(pj.CallCallback):
             lib.conf_connect(0, call_slot)
 
 class VeTone:
-    def __init__(self):
-	pass
-
-    def ring(self):
+    def ring_start():
+	global tone
 	tone = lib.create_player(
 	    os.path.dirname(os.path.realpath(__file__)) + "/sounds/tone.wav",
 	    True
 	)
 	lib.conf_connect(tone, 0)
+	return tone
+
+    def ring_stop(tone):
+        lib.player_destroy(tone)
 
 
 try:
