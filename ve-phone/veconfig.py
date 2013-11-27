@@ -51,7 +51,10 @@ def get_sipcfg():
 
 try:
     config = ConfigParser.RawConfigParser()
-    config.read(os.path.expanduser('~/sauron-com-kit/ve-phone/config.ini'))
+    config.read([os.path.expanduser('~/settings/config.ini')],
+        os.path.expanduser('~/sauron-com-kit/ve-phone/config.ini'),
+	'config.ini']
+    )
 except:
     syslog.syslog(syslog.LOG_ERR, "Config Error,")
     pass
