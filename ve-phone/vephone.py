@@ -107,9 +107,7 @@ class VeAccountCallback(pj.AccountCallback):
         current_call = call
 	call_cb = VeCallCallback(current_call)
 	current_call.set_callback(call_cb)
-	 
-	if not current_call:
-	    current_call.answer(200)
+	current_call.answer(200)
         
 
 """ Class to receive events from Call """
