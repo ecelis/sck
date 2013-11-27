@@ -21,20 +21,23 @@ CHANNELS = 2 # 1 = mono, 2 = stereo
 BUFFER = 1024 # audio buffer size in No. of samples/sec
 FRAMERATE = 30 # How often check if playback has finished
 
+soundir = None
+one_tone = None
+three_tones = None
+
 class Tone:
-soundir = os.path.dirname(os.path.realpath(__file__)) + "/sounds"
-one_tone = soundir + "/tone.wav"
-three_tones = soundir + "/three-tones.wav"
+    def __init__(self):
+        self.soundir = os.path.dirname(os.path.realpath(__file__)) + "/sounds"
+        self.one_tone = self.soundir + "/tone.wav"
+        self.three_tones = self.soundir + "/three-tones.wav"
+        pygame.mixer.init(FREQ, BITSIZE, CHANNELS, BUFFER)
 
-def __init__(self):
-   pygame.mixer.init(FREQ, BITSIZE, CHANNELS, BUFFER)
 
-def one_ring():
-    sound = pygame.mixer.Sound(one_tone)
-    clock = pygame.time.Clock()
-    sound.play()
-    while pygame.mixer.get_busy():
-	clock.tick(FRAMERATE)
+    def one_ring(self):
+        sound = pygame.mixer.Sound(self.one_tone)
+        clock = pygame.time.Clock()
+        sound.play()
+        while pygame.mixer.get_busy():
+	    clock.tick(FRAMERATE)
 
-one_ring()
 
