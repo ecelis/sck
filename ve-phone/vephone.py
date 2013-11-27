@@ -124,7 +124,7 @@ class VeCallCallback(pj.CallCallback):
 	call_state = self.call.info().state
 
 	if call_state == pj.CallState.EARLY:
-	    #tone.one_ring()
+	    VeTone().ring()
 	    pass
 	elif call_state == pj.CallState.DISCONNECTED:
             current_call = None
@@ -146,9 +146,7 @@ class VeTone:
 	tone = lib.create_player(
 	    os.path.dirname(os.path.realpath(__file__)) + "/sounds/tone.wav"
 	)
-	while (self.call.info().state == pj.CallState.EARLY):
-	    lib.conf_connect(tone, 0)
-	    continue
+	lib.conf_connect(tone, 0)
 
 
 try:
