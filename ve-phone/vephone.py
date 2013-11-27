@@ -19,6 +19,7 @@ import threading
 import syslog
 import asgetch as gc
 import veconfig
+import vetone
 
 LOG_LEVEL = 3
 # Logging callback
@@ -137,6 +138,8 @@ try:
     sipcfg = veconfig.get_sipcfg()
     # Get address book
     address_book = veconfig.get_address_book()
+    # Create audio tones instance
+    tone = vetone.Tone()
     # Create library instance
     lib = pj.Lib()
     # Init library with default config
