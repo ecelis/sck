@@ -145,7 +145,7 @@ try:
     # Get address book
     address_book = veconfig.get_address_book()
     # Create audio tones instance
-    tone = vetone.Tone()
+    #tone = vetone.Tone()
     # Create library instance
     lib = pj.Lib()
     # Init library with default config
