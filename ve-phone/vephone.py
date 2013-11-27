@@ -138,7 +138,7 @@ class VeCallCallback(pj.CallCallback):
             lib.conf_connect(call_slot, 0)
             lib.conf_connect(0, call_slot)
 
-class VeTone(self):
+class VeTone:
     def __init__(self):
 	pass
 
