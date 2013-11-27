@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # ValkEye SIP Phone, vephone.py
 # Ernesto Celis <developer@celisdelafuente.net>
 # Nov. 2013
