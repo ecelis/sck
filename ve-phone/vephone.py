@@ -141,7 +141,7 @@ class VeCallCallback(pj.CallCallback):
             lib.conf_connect(0, call_slot)
 
 class VeTone:
-    def ring_start():
+    def ring_start(self):
 	global tone
 	tone = lib.create_player(
 	    os.path.dirname(os.path.realpath(__file__)) + "/sounds/tone.wav",
