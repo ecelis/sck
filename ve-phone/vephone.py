@@ -145,7 +145,8 @@ class VeTone:
 
     def ring(self):
 	tone = lib.create_player(
-	    os.path.dirname(os.path.realpath(__file__)) + "/sounds/tone.wav"
+	    os.path.dirname(os.path.realpath(__file__)) + "/sounds/tone.wav",
+	    True
 	)
 	lib.conf_connect(tone, 0)
 
