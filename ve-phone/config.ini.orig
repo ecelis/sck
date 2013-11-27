@@ -4,14 +4,13 @@ user: someone
 # mysql password
 passwd: secret
 # mysql host
-host: x.x.x.x
+host: 192.168.0.0
 # mysql database name
-name: valkeye_db
+name: dbname
 [sip]
 # SIP Extension/user
-ext:2002
+ext: 2002
 # SIP password
-passwd:3y3Ext
+passwd: secret
 # SIP/PBX server
-srv:192.168.200.40
-  
+srv: 192.168.0.0

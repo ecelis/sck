@@ -32,7 +32,6 @@ def get_address_book():
         cursor.execute(query)
         data = cursor.fetchall()
         address_book = dict((id,(str(extension),cid)) for id,extension,cid in data)
-	print address_book
         return address_book
     except:
 	syslog.syslog(syslog.LOG_ERR, "Config Address Book Error," )
