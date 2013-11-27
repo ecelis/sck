@@ -138,6 +138,18 @@ class VeCallCallback(pj.CallCallback):
             lib.conf_connect(call_slot, 0)
             lib.conf_connect(0, call_slot)
 
+class VeTone():
+    def __init__(self):
+	pass
+
+    def ring(self):
+	tone = lib.create_player(
+	    os.path.dirname(os.path.realpath(__file__)) + "/sounds/tone.wav"
+	)
+	while (self.call.info().state == pj.CallState.EARLY):
+	    lib.conf_connect(tone, 0)
+	    continue
+
 
 try:
     # Get PBX/SIP username/extension, PBX server and password
