@@ -121,7 +121,7 @@ class VeCallCallback(pj.CallCallback):
         syslog.syslog(syslog.LOG_INFO, "(" + self.call.info().last_reason + ")")
 
         global call_state
-	call_state = self.call.info.state
+	call_state = self.call.info().state
 
 	if call_state == pj.CallState.EARLY:
 	    #tone.one_ring()
