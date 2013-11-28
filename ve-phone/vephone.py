@@ -23,6 +23,7 @@ import veconfig
 import vetone
 
 LOG_LEVEL = 3
+tone = None
 # Logging callback
 def log_cb(level, str, len):
     syslog.syslog(syslog.LOG_INFO,str),
@@ -158,6 +159,7 @@ class VeTone:
 
     """ Stop ring tone """
     def ring_stop(self, tone):
+	global tone
 	if tone:
 	    # disconnect tone from sound device
 	    lib.conf_disconnect(tone,0)
