@@ -174,6 +174,12 @@ try:
     sipcfg = veconfig.get_sipcfg()
     # Get address book
     address_book = veconfig.get_address_book()
+    # Media Config
+    mc = pj.MediaConfig()
+    mc.ec_options = 0 # default 0
+    mc.ec_tail_len = 256 # default 256
+    mc.no_vad = False # disable Voice Activity Detector
+    mc.enable_ice = True # Enable Interactive Connectivity Establishment
     # Create library instance
     lib = pj.Lib()
     # Init library with default config
