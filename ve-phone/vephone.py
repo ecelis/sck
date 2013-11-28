@@ -128,7 +128,9 @@ class VeCallCallback(pj.CallCallback):
 	if call_state == pj.CallState.EARLY:
 	    tone = VeTone().ring_start()
 	elif call_state == pj.CallState.INCOMING:
-	    VeTone().ring_start()
+	    # TODO let it ring at least once before answer the call
+	    #VeTone().ring_start()
+	    pass
         elif call_state == pj.CallState.CONFIRMED:
 	    VeTone().ring_stop(tone)
 	elif call_state == pj.CallState.DISCONNECTED:
