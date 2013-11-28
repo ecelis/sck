@@ -135,8 +135,10 @@ class VeCallCallback(pj.CallCallback):
     # Notification when call's media state changed
     def on_media_state(self):
         global lib
+	global tone
         if self.call.info().media_state == pj.MediaState.ACTIVE:
             # Connect the call to sound device
+            VeTone().ring_stop(tone)
             call_slot = self.call.info().conf_slot
             lib.conf_connect(call_slot, 0)
             lib.conf_connect(0, call_slot)
@@ -172,6 +174,7 @@ try:
     address_book = veconfig.get_address_book()
     # Create audio tones instance
     #tone = vetone.Tone()
+    tone = None
     # Create library instance
     lib = pj.Lib()
     # Init library with default config
