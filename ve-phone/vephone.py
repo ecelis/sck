@@ -101,9 +101,10 @@ class VeAccountCallback(pj.AccountCallback):
         syslog.syslog(syslog.LOG_INFO, "Incoming call from "
 	    + call.info().remote_uri)
 	global current_call
-        global tone
+        #TODO global tone
 
-	tone = VeTone().ring_start()
+        
+	#tone = VeTone().ring_start()
         current_call = call
 	call_cb = VeCallCallback(current_call)
 	current_call.set_callback(call_cb)
