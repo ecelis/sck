@@ -121,15 +121,13 @@ class VeCallCallback(pj.CallCallback):
         syslog.syslog(syslog.LOG_INFO, "last code = " + str(self.call.info().last_code))
         syslog.syslog(syslog.LOG_INFO, "(" + self.call.info().last_reason + ")")
 
-        global call_state
 	call_state = self.call.info().state
-
-        global tone
+	tone = None
 	if call_state == pj.CallState.EARLY:
 	    tone = VeTone().ring_start()
 	elif call_state == pj.CallState.INCOMING:
 	    # TODO let it ring at least once before answer the call
-	    #VeTone().ring_start()
+	    VeTone().ring_start()
 	    pass
         elif call_state == pj.CallState.CONFIRMED:
 	    VeTone().ring_stop(tone)
