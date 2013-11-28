@@ -108,7 +108,6 @@ class VeAccountCallback(pj.AccountCallback):
 	call_cb = VeCallCallback(current_call)
 	current_call.set_callback(call_cb)
 	current_call.answer(200)
-	VeTone().ring_stop(tone)
 
 """ Class to receive events from Call """
 class VeCallCallback(pj.CallCallback):
@@ -139,6 +138,7 @@ class VeCallCallback(pj.CallCallback):
         if self.call.info().media_state == pj.MediaState.ACTIVE:
             # Connect the call to sound device
             call_slot = self.call.info().conf_slot
+	    VeTone().ring_stop(tone)
             lib.conf_connect(call_slot, 0)
             lib.conf_connect(0, call_slot)
 
