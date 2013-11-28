@@ -156,7 +156,7 @@ class VeTone:
 
     def ring_stop(self, tone):
 	lib.conf_disconnect(tone,0)
-        #lib.player_destroy(tone)
+        lib.player_destroy(tone)
 
     def incoming(self):
 	global tone
