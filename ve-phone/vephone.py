@@ -159,10 +159,11 @@ class VeTone:
 
     """ Stop ring tone """
     def ring_stop(self, tone):
-	# disconnect tone from sound device
-	lib.conf_disconnect(tone,0)
-	# destroy tone
-        lib.player_destroy(tone)
+	if tone:
+	    # disconnect tone from sound device
+	    lib.conf_disconnect(tone,0)
+	    # destroy tone
+            lib.player_destroy(tone)
 
 
 try:
