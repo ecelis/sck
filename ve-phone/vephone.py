@@ -103,7 +103,7 @@ class VeAccountCallback(pj.AccountCallback):
 	global current_call
         global tone
 
-	tone = VeTone().ring_start()
+	#tone = VeTone().ring_start()
         current_call = call
 	call_cb = VeCallCallback(current_call)
 	current_call.set_callback(call_cb)
@@ -138,7 +138,6 @@ class VeCallCallback(pj.CallCallback):
         if self.call.info().media_state == pj.MediaState.ACTIVE:
             # Connect the call to sound device
             call_slot = self.call.info().conf_slot
-	    VeTone().ring_stop(tone)
             lib.conf_connect(call_slot, 0)
             lib.conf_connect(0, call_slot)
 
