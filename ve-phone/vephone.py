@@ -127,7 +127,6 @@ class VeCallCallback(pj.CallCallback):
         global tone
 	if call_state == pj.CallState.EARLY:
 	    tone = VeTone().ring_start()
-	elif calls_state == pj
 	elif call_state == pj.CallState.DISCONNECTED:
 	    VeTone().ring_stop(tone)
             current_call = None
