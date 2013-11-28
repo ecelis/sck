@@ -147,16 +147,16 @@ class VeCallCallback(pj.CallCallback):
 class VeTone:
     def ring_start(self):
 	global tone
-	tone = lib.create_player(
-	    os.path.dirname(os.path.realpath(__file__)) + "/sounds/tone.wav",
-	    True
-	)
+	#tone = lib.create_player(
+	#    os.path.dirname(os.path.realpath(__file__)) + "/sounds/tone.wav",
+	#    True
+	#)
 	lib.conf_connect(tone, 0)
 	return tone
 
     def ring_stop(self, tone):
 	lib.conf_disconnect(tone,0)
-        lib.player_destroy(tone)
+        #lib.player_destroy(tone)
 
     def incoming(self):
 	global tone
@@ -174,8 +174,10 @@ try:
     # Get address book
     address_book = veconfig.get_address_book()
     # Create audio tones instance
-    #tone = vetone.Tone()
-    tone = None
+    tone = lib.create_player(	    
+        os.path.dirname(os.path.realpath(__file__)) + "/sounds/tone.wav",
+        True
+    )
     # Create library instance
     lib = pj.Lib()
     # Init library with default config
