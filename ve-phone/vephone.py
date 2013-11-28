@@ -23,7 +23,6 @@ import veconfig
 import vetone
 
 LOG_LEVEL = 3
-tone = None
 # Logging callback
 def log_cb(level, str, len):
     syslog.syslog(syslog.LOG_INFO,str),
@@ -147,7 +146,6 @@ class VeCallCallback(pj.CallCallback):
 class VeTone:
     """ Start ring tone """
     def ring_start(self):
-	global tone
 	# Create the tone from sound file and loop forever
 	tone = lib.create_player(
 	    os.path.dirname(os.path.realpath(__file__)) + "/sounds/tone.wav",
@@ -159,7 +157,6 @@ class VeTone:
 
     """ Stop ring tone """
     def ring_stop(self, tone):
-	global tone
 	if tone:
 	    # disconnect tone from sound device
 	    lib.conf_disconnect(tone,0)
