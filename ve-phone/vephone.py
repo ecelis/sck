@@ -150,7 +150,7 @@ class VeTone:
 	lib.conf_connect(tone, 0)
 	return tone
 
-    def ring_stop(tone):
+    def ring_stop(self, tone):
         lib.player_destroy(tone)
 
 
