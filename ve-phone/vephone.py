@@ -101,12 +101,14 @@ class VeAccountCallback(pj.AccountCallback):
         syslog.syslog(syslog.LOG_INFO, "Incoming call from "
 	    + call.info().remote_uri)
 	global current_call
+        global tone
 
+	tone = VeTone().ring_start()
         current_call = call
 	call_cb = VeCallCallback(current_call)
 	current_call.set_callback(call_cb)
 	current_call.answer(200)
-        
+        VeTone.ring_stop(tone)
 
 """ Class to receive events from Call """
 class VeCallCallback(pj.CallCallback):
@@ -153,6 +155,14 @@ class VeTone:
     def ring_stop(self, tone):
 	lib.conf_disconnect(tone,0)
         lib.player_destroy(tone)
+
+    def incoming(self):
+	global tone
+	tone = lib.create_player(
+	    os.path.dirname(os.path.realpath(__file__)) + "/sounds/three-tones.wav"
+	)
+	lib.conf_connect(tone, 0)
+	return tone
 
 
 try:
