@@ -126,20 +126,21 @@ class VeCallCallback(pj.CallCallback):
         global call_state
 	call_state = self.call.info().state
 
-        global tone
+        #global tone
 	if call_state == pj.CallState.EARLY:
-	    tone = VeTone().ring_start()
+#	    tone = VeTone().ring_start()
+            pass
 	elif call_state == pj.CallState.DISCONNECTED:
-	    VeTone().ring_stop(tone)
+	    #VeTone().ring_stop(tone)
             current_call = None
 
     # Notification when call's media state changed
     def on_media_state(self):
         global lib
-	global tone
+#	global tone
         if self.call.info().media_state == pj.MediaState.ACTIVE:
             # Connect the call to sound device
-            VeTone().ring_stop(tone)
+#            VeTone().ring_stop(tone)
             call_slot = self.call.info().conf_slot
             lib.conf_connect(call_slot, 0)
             lib.conf_connect(0, call_slot)
