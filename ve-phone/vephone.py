@@ -122,7 +122,6 @@ class VeCallCallback(pj.CallCallback):
         syslog.syslog(syslog.LOG_INFO, "(" + self.call.info().last_reason + ")")
 
 	call_state = self.call.info().state
-	tone = None
 	if call_state == pj.CallState.EARLY:
 	    tone = VeTone().ring_start()
 	elif call_state == pj.CallState.INCOMING:
