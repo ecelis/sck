@@ -147,10 +147,10 @@ class VeCallCallback(pj.CallCallback):
 class VeTone:
     def ring_start(self):
 	global tone
-	#tone = lib.create_player(
-	#    os.path.dirname(os.path.realpath(__file__)) + "/sounds/tone.wav",
-	#    True
-	#)
+	tone = lib.create_player(
+	    os.path.dirname(os.path.realpath(__file__)) + "/sounds/tone.wav",
+	    True
+	)
 	lib.conf_connect(tone, 0)
 	return tone
 
@@ -177,12 +177,7 @@ try:
     lib = pj.Lib()
     # Init library with default config
     lib.init(log_cfg = pj.LogConfig(level=LOG_LEVEL, callback=log_cb))
-    # Create audio tones instance
-    tone = lib.create_player(	    
-        os.path.dirname(os.path.realpath(__file__)) + "/sounds/tone.wav",
-        True
-    )
-    # Create UDP transport which listens to any available port
+   # Create UDP transport which listens to any available port
     transport = lib.create_transport(pj.TransportType.UDP)
     # Start the library
     lib.start()
