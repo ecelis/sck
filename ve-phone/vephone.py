@@ -127,9 +127,9 @@ class VeCallCallback(pj.CallCallback):
         global tone
 	if call_state == pj.CallState.EARLY:
 	    tone = VeTone().ring_start()
-	elif calls_state == pj.CallState.INCOMING:
+	elif call_state == pj.CallState.INCOMING:
 	    VeTone().ring_start()
-        elif calls_state == pj.CallState.CONFIRMED:
+        elif call_state == pj.CallState.CONFIRMED:
 	    VeTone().ring_stop(tone)
 	elif call_state == pj.CallState.DISCONNECTED:
 	    VeTone().ring_stop(tone)
@@ -145,17 +145,23 @@ class VeCallCallback(pj.CallCallback):
             lib.conf_connect(0, call_slot)
 
 class VeTone:
+    """ Start ring tone """
     def ring_start(self):
 	global tone
+	# Create the tone from sound file and loop forever
 	tone = lib.create_player(
 	    os.path.dirname(os.path.realpath(__file__)) + "/sounds/tone.wav",
 	    True
 	)
+	# Connect ring tone to sound device
 	lib.conf_connect(tone, 0)
 	return tone
 
+    """ Stop ring tone """
     def ring_stop(self, tone):
+	# disconnect tone from sound device
 	lib.conf_disconnect(tone,0)
+	# destroy tone
         lib.player_destroy(tone)
 
 
