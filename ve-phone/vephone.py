@@ -103,7 +103,7 @@ class VeAccountCallback(pj.AccountCallback):
 	global current_call
         global tone
 
-	#tone = VeTone().ring_start()
+	tone = VeTone().incoming()
         current_call = call
 	call_cb = VeCallCallback(current_call)
 	current_call.set_callback(call_cb)
