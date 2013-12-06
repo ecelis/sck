@@ -20,7 +20,7 @@ import threading
 import syslog
 import asgetch as gc
 import veconfig
-import vetone
+#import vetone
 
 LOG_LEVEL = 3
 # Logging callback
