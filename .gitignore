@@ -4,7 +4,6 @@ config.status
 *.pyc
 ve-phone/config.ini
 */bin
-*/build
 */lib
 
 
