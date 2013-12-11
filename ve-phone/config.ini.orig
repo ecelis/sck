@@ -14,3 +14,14 @@ ext: 2002
 passwd: secret
 # SIP/PBX server
 srv: 192.168.0.0
+[audio]
+master: Master
+pcm: PCM
+# The hardware I tested had (Capture, 0) and (Capture, 1)
+capture: Capture
+cap_idx: 0
+# The hardware I tested had (Input Source, 0) and (Input Source, 1)
+input_src: Input Source
+in_idx: 0
+mic: Rear Mic
+mic_boost: Rear Mic Boost
