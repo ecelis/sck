@@ -15,6 +15,7 @@
 import pyalsa.alsacard as acard
 import pyalsa.alsamixer as amixer
 import sys
+import veconfig
 
 class VSS:
     def __init__(self):
@@ -40,6 +41,7 @@ class _VSS24:
 	
     def _get_mixer_elements(self):
 	# Get the mixer elements
+	audiocfg = veconfig.get_audiocfg()
 	if self.mixer.count > 0:
 	    elements = self.mixer.list()
 	    for i in elements:
@@ -117,7 +119,7 @@ class _VSS27:
 	if self.mixer.count > 0:
 	    elements = self.mixer.list()
 	    for i in elements:
-                if i[0] == 'Master':
+                if i[0] == :
 	            self._set_master(i)
 		elif i[0] == 'PCM':
 		    self._set_pcm(i)
