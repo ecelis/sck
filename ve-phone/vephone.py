@@ -20,6 +20,7 @@ import threading
 import syslog
 import asgetch as gc
 import veconfig
+import vess
 #import vetone
 
 LOG_LEVEL = 3
@@ -35,13 +36,13 @@ def main_loop():
             getch = gc._Getch()
             choice = getch()
 	    # Search the address book first, it only handles 0 to 1
-            for c in address_book:
+            for contact in address_book:
 		# address_book = {'1': ('1001', 'AMBULANCE'), ...}
-		if choice == c:
-		    uri = "sip:"+address_book[c][0]+"@"+sipcfg['srv']
+		if choice == contact:
+		    uri = "sip:"+address_book[contact][0]+"@"+sipcfg['srv']
 		    syslog.syslog(syslog.LOG_INFO, "Dial " + 
-			str(c) + " " +
-		        address_book[c][1])
+			str(contact) + " " +
+		        address_book[contact][1])
 		    make_call(uri)
             # Special options are handled by *,-,+ and / characters
 	    if choice == "*":
@@ -53,7 +54,7 @@ def main_loop():
 		syslog.syslog(syslog.LOG_INFO,"Dial TEST")
 		make_call("sip:1106@sip.sdf.org")
 	    elif choice == "-":
-		# TODO
+		# TODO reserved
 		pass
 	    elif choice == "/":
 		# Exit manually
@@ -64,7 +65,7 @@ def main_loop():
 		syslog.syslog(syslog.LOG_NOTICE,"Invalid input, this is weird!")
 
 	except ValueError:
-            syslog.syslog(syslog.LOG_NOTICE,"Invalid input, this is weird!")
+            syslog.syslog(syslog.LOG_NOTICE,"Exception, this is weird!")
 	    continue
 
 
@@ -170,16 +171,18 @@ class VeTone:
 
 
 try:
+    # Initialize Sound System
+    audioctl = vess.VSS()
     # Get PBX/SIP username/extension, PBX server and password
     sipcfg = veconfig.get_sipcfg()
     # Get address book
     address_book = veconfig.get_address_book()
     # Media Config
-    mc = pj.MediaConfig()
-    mc.ec_options = 0 # default 0
-    mc.ec_tail_len = 256 # default 256
-    mc.no_vad = False # disable Voice Activity Detector
-    mc.enable_ice = True # Enable Interactive Connectivity Establishment
+    media = pj.MediaConfig()
+    media.ec_options = 0 # default 0
+    media.ec_tail_len = 256 # default 256
+    media.no_vad = False # disable Voice Activity Detector
+    media.enable_ice = True # Enable Interactive Connectivity Establishment
     # Create library instance
     lib = pj.Lib()
     # Init library with default config
