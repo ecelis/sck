@@ -33,9 +33,10 @@ def main_loop():
     while True:
 	syslog.syslog(syslog.LOG_INFO, "Ready!")
 	try:
+	    # Read only one character from standard input
             getch = gc._Getch()
             choice = getch()
-	    # Search the address book first, it only handles 0 to 1
+	    # Search the address book first, it only handles 0 to 9
             for contact in address_book:
 		# address_book = {'1': ('1001', 'AMBULANCE'), ...}
 		if choice == contact:
@@ -43,6 +44,7 @@ def main_loop():
 		    syslog.syslog(syslog.LOG_INFO, "Dial " + 
 			str(contact) + " " +
 		        address_book[contact][1])
+		    # Call contact
 		    make_call(uri)
             # Special options are handled by *,-,+ and / characters
 	    if choice == "*":
@@ -79,7 +81,7 @@ def make_call(uri):
 	return None
 
 
-""" Callback for handling registration """
+""" Callback for handling registration on PBX """
 class VeAccountCallback(pj.AccountCallback):
     
     sem = None
@@ -103,8 +105,6 @@ class VeAccountCallback(pj.AccountCallback):
 	    + call.info().remote_uri)
 	global current_call
         #TODO global tone
-
-        
 	#tone = VeTone().ring_start()
         current_call = call
 	call_cb = VeCallCallback(current_call)
@@ -171,22 +171,21 @@ class VeTone:
 
 
 try:
-    # Initialize Sound System
-    #audiocfg = veconfig.get_audiocfg()
-    audioctl = vess.VSS()
+    # Initialize ValkEye Sound System
+    audio = vess.VSS()
     # Get PBX/SIP username/extension, PBX server and password
     sipcfg = veconfig.get_sipcfg()
     # Get address book
     address_book = veconfig.get_address_book()
     # Media Config
     media = pj.MediaConfig()
-    media.ec_options = 0 # default 0
-    media.ec_tail_len = 256 # default 256
+    media.ec_options = 0 # pjsua default 0
+    media.ec_tail_len = 256 # pjsua default 256
     media.no_vad = False # disable Voice Activity Detector
-    media.enable_ice = True # Enable Interactive Connectivity Establishment
-    # Create library instance
+    media.enable_ice = True # Enable (ICE) Interactive Connectivity Establishment
+    # Create pjsua library instance
     lib = pj.Lib()
-    # Init library with default config
+    # Init pjsua with default config
     lib.init(log_cfg = pj.LogConfig(level=LOG_LEVEL, callback=log_cb))
    # Create UDP transport which listens to any available port
     transport = lib.create_transport(pj.TransportType.UDP)
