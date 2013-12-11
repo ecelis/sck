@@ -135,6 +135,15 @@ class _VSS27:
     def _set_capture(self, element):
 	self.capture = amixer.Element(self.mixer, element[0], element[1])
 
+    def _set_input_src(self, element):
+	self.input_src = amixer.Element(self.mixer, element[0], element[1])
+
+    def _set_mic(self, element):
+	self.mic = amixer.Element(self.mixer, element[0], element[1])
+
+    def _set_mic_boost(self, element):
+	self.mic_bost = amixer.Element(self.mixer, element[0], element[1])
+
     #def _set_capture(self, element):
     #	self.capture = amixer.Element(self.mixer, element[0], element[1])
 

@@ -49,9 +49,22 @@ def get_sipcfg():
 
         return sipcfg
     except:
-	syslog.syslog(syslog.LOG_ERR,"Config SIP Account Error,")
+	syslog.syslog(syslog.LOG_ERR,"Config SIP Account Error.")
 	pass
 
+def get_audio_settings():
+    audiocfg = None
+    try:
+	master = config.get("audio", "master")
+	pcm = config.get("audio", "pcm")
+	capture = config.get("audio", "capture")
+	cap_idx = config.get("audio", "cap_idx")
+	input_src = config.get("audio", "input_src")
+	in_idx = config.get("audio", "in_idx")
+	mic = config.get("audio", "mic")
+	mic_boost = config.get("audio", "mic_boost")
+    except:
+	syslog.syslog(syslog.LOG_ERR,"Config Audio Error.")
 
 try:
     config = ConfigParser.RawConfigParser()
