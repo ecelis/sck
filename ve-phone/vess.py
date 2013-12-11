@@ -34,7 +34,7 @@ class _VSS24:
 	self.mixer = amixer.Mixer()
 	self.mixer.attach()
 	self.mixer.load()
-	print self.mixer.list()
+	#print self.mixer.list()
 	self._get_mixer_elements()
 	self.mute_all()
 	
@@ -108,7 +108,7 @@ class _VSS27:
 	self.mixer = amixer.Mixer()
 	self.mixer.attach()
 	self.mixer.load()
-	print self.mixer.list()
+	#print self.mixer.list()
 	self._get_mixer_elements()
 	self.mute_all()
 	
