@@ -35,7 +35,6 @@ def get_address_book():
         return address_book
     except:
 	syslog.syslog(syslog.LOG_ERR, "Config Address Book Error," )
-        pass
 
 def get_sipcfg():
     sipcfg = None
@@ -50,9 +49,8 @@ def get_sipcfg():
         return sipcfg
     except:
 	syslog.syslog(syslog.LOG_ERR,"Config SIP Account Error.")
-	pass
 
-def get_audio_settings():
+def get_audiocfg():
     audiocfg = None
     try:
 	master = config.get("audio", "master")
@@ -63,6 +61,12 @@ def get_audio_settings():
 	in_idx = config.get("audio", "in_idx")
 	mic = config.get("audio", "mic")
 	mic_boost = config.get("audio", "mic_boost")
+	_audiocfg = dict([('master',master),('pcm',pcm),('capture',capture),
+	    ('cap_idx',cap_idx),('input_src',input_src),('in_idx',in_idx),
+	    ('mic',mic),('mic_boost',mic_boost)])
+	if not _audiocfg == None
+            audiocfg = dict((k,v) for k,v in _audiocfg.iteritems())
+	return audiocfg
     except:
 	syslog.syslog(syslog.LOG_ERR,"Config Audio Error.")
 

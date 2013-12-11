@@ -172,6 +172,7 @@ class VeTone:
 
 try:
     # Initialize Sound System
+    #audiocfg = veconfig.get_audiocfg()
     audioctl = vess.VSS()
     # Get PBX/SIP username/extension, PBX server and password
     sipcfg = veconfig.get_sipcfg()
