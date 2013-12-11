@@ -34,7 +34,8 @@ def get_address_book():
         address_book = dict((id,(str(extension),cid)) for id,extension,cid in data)
         return address_book
     except:
-	syslog.syslog(syslog.LOG_ERR, "Config Address Book Error," )
+	syslog.syslog(syslog.LOG_ERR, "Config Address Book Error,")
+
 
 def get_sipcfg():
     sipcfg = None
@@ -42,13 +43,15 @@ def get_sipcfg():
         ext = config.get("sip", "ext")
         srv = config.get("sip", "srv")
         pwd = config.get("sip", "passwd")
-        _sipcfg = dict([('ext', ext), ('srv', srv), ('pwd', pwd)])
-        if not _sipcfg == None:
-            sipcfg = dict((k,v) for k,v in _sipcfg.iteritems())
+        sipcfg = dict([('ext', ext), ('srv', srv), ('pwd', pwd)])
+        if not sipcfg == None:
+            return sipcfg
+	else:
+            return None
 
-        return sipcfg
     except:
 	syslog.syslog(syslog.LOG_ERR,"Config SIP Account Error.")
+
 
 def get_audiocfg():
     audiocfg = None
@@ -61,21 +64,27 @@ def get_audiocfg():
 	in_idx = config.get("audio", "in_idx")
 	mic = config.get("audio", "mic")
 	mic_boost = config.get("audio", "mic_boost")
-	_audiocfg = dict([('master',master),('pcm',pcm),('capture',capture),
+	audiocfg = dict([('master',master),('pcm',pcm),('capture',capture),
 	    ('cap_idx',cap_idx),('input_src',input_src),('in_idx',in_idx),
 	    ('mic',mic),('mic_boost',mic_boost)])
-	if not _audiocfg == None
-            audiocfg = dict((k,v) for k,v in _audiocfg.iteritems())
-	return audiocfg
+	if not audiocfg == None:
+            return audiocfg
+        else:
+	    return None
+
     except:
 	syslog.syslog(syslog.LOG_ERR,"Config Audio Error.")
+
 
 try:
     config = ConfigParser.RawConfigParser()
     config.read([os.path.expanduser('~/settings/config.ini'),
+	os.path.expanduser('~/.veconfig.ini'),
+        os.path.dirname(os.path.realpath(__file__))+'/config.ini',
         os.path.expanduser('~/sauron-com-kit/ve-phone/config.ini'),
 	'config.ini']
     )
+
 except:
     syslog.syslog(syslog.LOG_ERR, "Config Error,")
     pass
