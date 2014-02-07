@@ -48,7 +48,7 @@ def main_loop():
                     make_call(uri)
                     continue
             # Special options are handled by *,-,+ and / characters
-            if choice == "*":
+            if choice == "1":
                 # * enable local audio
                 syslog.syslog(syslog.LOG_INFO,"SCK Toggle Local MIC")
                 # TODO
