@@ -39,7 +39,6 @@ def main_loop():
             # Search the address book first, it only handles 0 to 9
             for contact in address_book:
                 # address_book = {'1': ('1001', 'AMBULANCE'), ...}
-                print contact
                 if choice == str(contact):
                     uri = "sip:"+address_book[contact][0]+"@"+sipcfg['srv']
                     syslog.syslog(syslog.LOG_INFO, "SCK Dial "
