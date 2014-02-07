@@ -34,7 +34,7 @@ def get_address_book():
         address_book = dict((id,(str(extension),cid)) for id,extension,cid in data)
         return address_book
     except:
-	syslog.syslog(syslog.LOG_ERR, "SCK Config Address Book Error,")
+	syslog.syslog(syslog.LOG_ERR, "SCK Config Address Book Error, " + dbuser+"@"+dbhost+"/"+dbname)
 
 
 def get_sipcfg():
