@@ -31,43 +31,44 @@ def log_cb(level, str, len):
 
 def main_loop():
     while True:
-	syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
-	try:
-	    # Read only one character from standard input
+        syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
+        try:
+            # Read only one character from standard input
             getch = gc._Getch()
             choice = getch()
-	    # Search the address book first, it only handles 0 to 9
+            # Search the address book first, it only handles 0 to 9
             for contact in address_book:
-		# address_book = {'1': ('1001', 'AMBULANCE'), ...}
-		if choice == contact:
-		    uri = "sip:"+address_book[contact][0]+"@"+sipcfg['srv']
-		    syslog.syslog(syslog.LOG_INFO, "SCK Dial " + 
-			str(contact) + " " +
-		        address_book[contact][1])
-		    # Call contact
-		    make_call(uri)
+                # address_book = {'1': ('1001', 'AMBULANCE'), ...}
+                if choice == contact:
+                    uri = "sip:"+address_book[contact][0]+"@"+sipcfg['srv']
+                    syslog.syslog(syslog.LOG_INFO, "SCK Dial "
+                            + str(contact) + " " + address_book[contact][1])
+                    # Call contact
+                    make_call(uri)
             # Special options are handled by *,-,+ and / characters
-	    if choice == "*":
-	        # * enable local audio
-		syslog.syslog(syslog.LOG_INFO,"SCK Toggle Local MIC")
-		# TODO
-	    elif choice == "+":
-		# Test only option, do not use it for real services!
-		syslog.syslog(syslog.LOG_INFO,"SCK Dialing TEST")
-		make_call("sip:1106@sip.sdf.org")
-	    elif choice == "-":
-		# TODO reserved
-		syslog.syslog(syslog.LOG_INFO,"SCK - Action Reserved")
-	    elif choice == "/":
-		# Exit manually
-		syslog.syslog(syslog.LOG_NOTICE,"SCK Exit on user request!")
-		return
-	    else:
-		# anything else shouldn't be valid
-		syslog.syslog(syslog.LOG_NOTICE,"SCK Invalid input " + choice + ", this is weird!")
+            if choice == "*":
+                # * enable local audio
+                syslog.syslog(syslog.LOG_INFO,"SCK Toggle Local MIC")
+                # TODO
+            elif choice == "+":
+                # Test only option, do not use it for real services!
+                syslog.syslog(syslog.LOG_INFO,"SCK Dialing TEST")
+                make_call("sip:1106@sip.sdf.org")
+            elif choice == "-":
+                # TODO reserved
+                syslog.syslog(syslog.LOG_INFO,"SCK - Action Reserved")
+            elif choice == "/":
+                # Exit manually
+                syslog.syslog(syslog.LOG_NOTICE,"SCK Exit on user request!")
+                return
+            else:
+                # anything else shouldn't be valid
+                syslog.syslog(syslog.LOG_NOTICE,"SCK Invalid input " + 
+                        choice + ", this is weird!")
 
-	except ValueError:
+        except ValueError:
             syslog.syslog(syslog.LOG_NOTICE,"SCK Exception, this is weird!")
+
 	    continue
 
 
