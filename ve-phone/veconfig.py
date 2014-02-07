@@ -25,7 +25,7 @@ def get_address_book():
         dbpasswd = config.get("database", "passwd")
         dbhost = config.get("database", "host")
         # TODO Make it DB agnostic
-        query = ("SELECT id,extension,cid FROM address_book")
+        query = ("SELECT id,extension,cid FROM sos_address_book")
         conn = db.connect(user=dbuser, passwd=dbpasswd, host=dbhost,
             db=dbname)
         cursor = conn.cursor()
