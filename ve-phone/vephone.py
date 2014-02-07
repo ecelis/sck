@@ -46,6 +46,7 @@ def main_loop():
                             + str(contact) + " " + address_book[contact][1])
                     # Call contact
                     make_call(uri)
+                    continue
             # Special options are handled by *,-,+ and / characters
             if choice == "*":
                 # * enable local audio
