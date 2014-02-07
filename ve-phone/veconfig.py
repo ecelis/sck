@@ -34,7 +34,7 @@ def get_address_book():
         address_book = dict((id,(str(extension),cid)) for id,extension,cid in data)
         return address_book
     except:
-	syslog.syslog(syslog.LOG_ERR, "Config Address Book Error,")
+	syslog.syslog(syslog.LOG_ERR, "SCK Config Address Book Error,")
 
 
 def get_sipcfg():
@@ -50,7 +50,7 @@ def get_sipcfg():
             return None
 
     except:
-	syslog.syslog(syslog.LOG_ERR,"Config SIP Account Error.")
+	syslog.syslog(syslog.LOG_ERR,"SCK Config SIP Account Error.")
 
 
 def get_audiocfg():
@@ -73,7 +73,7 @@ def get_audiocfg():
 	    return None
 
     except:
-	syslog.syslog(syslog.LOG_ERR,"Config Audio Error.")
+	syslog.syslog(syslog.LOG_ERR,"SCK Config Audio Error.")
 
 
 try:
@@ -86,7 +86,7 @@ try:
     )
 
 except:
-    syslog.syslog(syslog.LOG_ERR, "Config Error,")
+    syslog.syslog(syslog.LOG_ERR, "SCK General Config Exception,")
     pass
 
 
