@@ -96,7 +96,9 @@ class VeAccountCallback(pj.AccountCallback):
     def on_reg_state(self):
 	if self.sem:
             if self.account.info().reg_status >= 300:
-                syslog.syslog(syslog.LOG_ERR, "SIP Client registration on PBX failed!")
+                syslog.syslog(syslog.LOG_ERR,
+                        self.account.info().reg_status + ' ' +
+                        self.account.info().reg_reason)
             if self.account.info().reg_status >= 200:
 		syslog.syslog(syslog.LOG_INFO,"SIP Client registered succesfully on PBX")
 		self.sem.release()
