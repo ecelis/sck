@@ -96,7 +96,7 @@ class VeAccountCallback(pj.AccountCallback):
     def on_reg_state(self):
 	if self.sem:
             if self.account.info().reg_status >= 200:
-                syslog.syslog(syslog.LOG_ERR, 'SCK registration ' +
+                syslog.syslog(syslog.LOG_ERR, 'SCK registration status ' +
                         str(self.account.info().reg_status) + ' ' +
                         self.account.info().reg_reason)
 		self.sem.release()
