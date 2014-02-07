@@ -45,27 +45,27 @@ def main_loop():
                             + str(contact) + " " + address_book[contact][1])
                     # Call contact
                     make_call(uri)
-                    continue
-                # Special options are handled by *,-,+ and / characters
-                elif choice == "*":
-                    # * enable local audio
-                    syslog.syslog(syslog.LOG_INFO,"SCK Toggle Local MIC")
-                    # TODO
-                elif choice == "+":
-                    # Test only option, do not use it for real services!
-                    syslog.syslog(syslog.LOG_INFO,"SCK Dialing TEST")
-                    make_call("sip:1106@sip.sdf.org")
-                elif choice == "-":
-                    # TODO reserved
-                    syslog.syslog(syslog.LOG_INFO,"SCK - Action Reserved")
-                elif choice == "/":
-                    # Exit manually
-                    syslog.syslog(syslog.LOG_NOTICE,"SCK Exit on user request!")
-                    return
-                else:
-                    # anything else shouldn't be valid
-                    syslog.syslog(syslog.LOG_NOTICE,"SCK Invalid input " + 
-                            choice + ", this is weird!")
+                    break
+            # Special options are handled by *,-,+ and / characters
+            if choice == "*":
+                # * enable local audio
+                syslog.syslog(syslog.LOG_INFO,"SCK Toggle Local MIC")
+                # TODO
+            elif choice == "+":
+                # Test only option, do not use it for real services!
+                syslog.syslog(syslog.LOG_INFO,"SCK Dialing TEST")
+                make_call("sip:1106@sip.sdf.org")
+            elif choice == "-":
+                # TODO reserved
+                syslog.syslog(syslog.LOG_INFO,"SCK - Action Reserved")
+            elif choice == "/":
+                # Exit manually
+                syslog.syslog(syslog.LOG_NOTICE,"SCK Exit on user request!")
+                return
+            else:
+                # anything else shouldn't be valid
+                syslog.syslog(syslog.LOG_NOTICE,"SCK Invalid input " + 
+                        choice + ", this is weird!")
 
         except ValueError:
             syslog.syslog(syslog.LOG_NOTICE,"SCK Exception, this is weird!")
