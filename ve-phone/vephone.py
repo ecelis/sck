@@ -96,11 +96,11 @@ class VeAccountCallback(pj.AccountCallback):
     def on_reg_state(self):
 	if self.sem:
             if self.account.info().reg_status >= 300:
-                syslog.syslog(syslog.LOG_ERR,
+                syslog.syslog(syslog.LOG_ERR, 'SIP registration ' +
                         str(self.account.info().reg_status) + ' ' +
                         self.account.info().reg_reason)
             if self.account.info().reg_status >= 200:
-		syslog.syslog(syslog.LOG_INFO,"SIP Client registered succesfully on PBX")
+		syslog.syslog(syslog.LOG_INFO,"SIP registration " + str(self.account.info().reg_status) + " " + self.account.info().reg_reason)
 		self.sem.release()
 
     def on_incoming_call(self, call):
