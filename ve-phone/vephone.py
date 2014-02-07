@@ -49,22 +49,22 @@ def main_loop():
             # Special options are handled by *,-,+ and / characters
 	    if choice == "*":
 	        # * enable local audio
-		syslog.syslog(syslog.LOG_INFO,"SCK Enable Local MIC")
+		syslog.syslog(syslog.LOG_INFO,"SCK Toggle Local MIC")
 		# TODO
 	    elif choice == "+":
 		# Test only option, do not use it for real services!
-		syslog.syslog(syslog.LOG_INFO,"SCK Dial TEST")
+		syslog.syslog(syslog.LOG_INFO,"SCK Dialing TEST")
 		make_call("sip:1106@sip.sdf.org")
 	    elif choice == "-":
 		# TODO reserved
-		pass
+		syslog.syslog(syslog.LOG_INFO,"SCK - Action Reserved")
 	    elif choice == "/":
 		# Exit manually
 		syslog.syslog(syslog.LOG_NOTICE,"SCK Exit on user request!")
 		return
 	    else:
 		# anything else shouldn't be valid
-		syslog.syslog(syslog.LOG_NOTICE,"SCK Invalid input, this is weird!")
+		syslog.syslog(syslog.LOG_NOTICE,"SCK Invalid input " + choice + ", this is weird!")
 
 	except ValueError:
             syslog.syslog(syslog.LOG_NOTICE,"SCK Exception, this is weird!")
