@@ -40,7 +40,7 @@ def main_loop():
             for contact in address_book:
                 # address_book = {'1': ('1001', 'AMBULANCE'), ...}
                 print contact
-                if choice == contact:
+                if choice == str(contact):
                     uri = "sip:"+address_book[contact][0]+"@"+sipcfg['srv']
                     syslog.syslog(syslog.LOG_INFO, "SCK Dial "
                             + str(contact) + " " + address_book[contact][1])
