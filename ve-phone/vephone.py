@@ -51,6 +51,7 @@ def main_loop():
             elif choice == "/":
                 # Exit manually
                 syslog.syslog(syslog.LOG_NOTICE,"SCK Exit on user request!")
+                return
             else:
                 for contact in address_book:
                     # address_book = {'1': ('1001', 'AMBULANCE'), ...}
