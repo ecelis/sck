@@ -26,12 +26,12 @@ import vess
 LOG_LEVEL = 3
 # Logging callback
 def log_cb(level, str, len):
-    syslog.syslog(syslog.LOG_INFO,str),
+    syslog.syslog(syslog.LOG_INFO,"PJSUA " + str),
 
 
 def main_loop():
     while True:
-	syslog.syslog(syslog.LOG_INFO, "Ready!")
+	syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
 	try:
 	    # Read only one character from standard input
             getch = gc._Getch()
@@ -41,7 +41,7 @@ def main_loop():
 		# address_book = {'1': ('1001', 'AMBULANCE'), ...}
 		if choice == contact:
 		    uri = "sip:"+address_book[contact][0]+"@"+sipcfg['srv']
-		    syslog.syslog(syslog.LOG_INFO, "Dial " + 
+		    syslog.syslog(syslog.LOG_INFO, "SCK Dial " + 
 			str(contact) + " " +
 		        address_book[contact][1])
 		    # Call contact
@@ -49,35 +49,35 @@ def main_loop():
             # Special options are handled by *,-,+ and / characters
 	    if choice == "*":
 	        # * enable local audio
-		syslog.syslog(syslog.LOG_INFO," Enable Local MIC")
+		syslog.syslog(syslog.LOG_INFO,"SCK Enable Local MIC")
 		# TODO
 	    elif choice == "+":
 		# Test only option, do not use it for real services!
-		syslog.syslog(syslog.LOG_INFO,"Dial TEST")
+		syslog.syslog(syslog.LOG_INFO,"SCK Dial TEST")
 		make_call("sip:1106@sip.sdf.org")
 	    elif choice == "-":
 		# TODO reserved
 		pass
 	    elif choice == "/":
 		# Exit manually
-		syslog.syslog(syslog.LOG_NOTICE,"Exit on user request!")
+		syslog.syslog(syslog.LOG_NOTICE,"SCK Exit on user request!")
 		return
 	    else:
 		# anything else shouldn't be valid
-		syslog.syslog(syslog.LOG_NOTICE,"Invalid input, this is weird!")
+		syslog.syslog(syslog.LOG_NOTICE,"SCK Invalid input, this is weird!")
 
 	except ValueError:
-            syslog.syslog(syslog.LOG_NOTICE,"Exception, this is weird!")
+            syslog.syslog(syslog.LOG_NOTICE,"SCK Exception, this is weird!")
 	    continue
 
 
 def make_call(uri):
     try:
-        syslog.syslog(syslog.LOG_INFO, "("+uri+")")
+        syslog.syslog(syslog.LOG_INFO, "SCK ("+uri+")")
         call = acc.make_call(uri, VeCallCallback())
 	return call
     except pj.Error, e:
-	syslog.syslog(syslog.LOG_ERR, str(e))
+	syslog.syslog(syslog.LOG_ERR, "SCK " + str(e))
 	return None
 
 
@@ -96,14 +96,14 @@ class VeAccountCallback(pj.AccountCallback):
     def on_reg_state(self):
 	if self.sem:
             if self.account.info().reg_status >= 200:
-                syslog.syslog(syslog.LOG_ERR, 'SIP registration ' +
+                syslog.syslog(syslog.LOG_ERR, 'SCK registration ' +
                         str(self.account.info().reg_status) + ' ' +
                         self.account.info().reg_reason)
 		self.sem.release()
 
     def on_incoming_call(self, call):
 	#TODO A lot of stuff, call handling mainly and logging also
-        syslog.syslog(syslog.LOG_INFO, "Incoming call from "
+        syslog.syslog(syslog.LOG_INFO, "SCK Incoming call from "
 	    + call.info().remote_uri)
 	global current_call
         #TODO global tone
@@ -122,9 +122,9 @@ class VeCallCallback(pj.CallCallback):
     """ Notification when call sate has changed """
     def on_state(self):
 	global current_call
-        syslog.syslog(syslog.LOG_INFO,"Call is " + self.call.info().state_text)
-        syslog.syslog(syslog.LOG_INFO, "last code = " + str(self.call.info().last_code))
-        syslog.syslog(syslog.LOG_INFO, "(" + self.call.info().last_reason + ")")
+        syslog.syslog(syslog.LOG_INFO,"SCK Call is " + self.call.info().state_text)
+        syslog.syslog(syslog.LOG_INFO, "    Last code = " + str(self.call.info().last_code))
+        syslog.syslog(syslog.LOG_INFO, "    (" + self.call.info().last_reason + ")")
 
         global call_state
 	call_state = self.call.info().state
@@ -214,7 +214,7 @@ try:
     sys.exit(0)
 
 except pj.Error, e:
-    syslog.syslog(syslog.LOG_ERR,"Exception: " + str(e))
+    syslog.syslog(syslog.LOG_ERR,"SCK Exception: " + str(e))
     lib.destroy()
     lib = None
     sys.exit(1)
