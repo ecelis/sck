@@ -20,7 +20,7 @@ import threading
 import syslog
 import asgetch as gc
 import veconfig
-import vess
+#import vess
 #import vetone
 
 LOG_LEVEL = 3
@@ -88,10 +88,10 @@ def make_call(uri):
     try:
         syslog.syslog(syslog.LOG_INFO, "SCK ("+uri+")")
         call = acc.make_call(uri, VeCallCallback())
-	return call
+        return call
     except pj.Error, e:
-	syslog.syslog(syslog.LOG_ERR, "SCK " + str(e))
-	return None
+        syslog.syslog(syslog.LOG_ERR, "SCK " + str(e))
+        return None
 
 
 """ Callback for handling registration on PBX """
