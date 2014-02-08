@@ -52,7 +52,7 @@ def main_loop():
                 # Exit manually
                 syslog.syslog(syslog.LOG_NOTICE,"SCK Exit on user request!")
                 return
-            else:
+            """else:
                 for contact in address_book:
                     # address_book = {'1': ('1001', 'AMBULANCE'), ...}
                     if choice == str(contact):
@@ -61,6 +61,7 @@ def main_loop():
                             + str(contact) + " " + address_book[contact][1])
                         # Call contact
                         make_call(uri)
+            """
 
         except ValueError:
             syslog.syslog(syslog.LOG_NOTICE,"SCK Exception, this is weird!")
