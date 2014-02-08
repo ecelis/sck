@@ -187,7 +187,7 @@ class VeTone:
 
 try:
     # Initialize ValkEye Sound System
-    audio = vess.VSS()
+    #audio = vess.VSS()
     # Get PBX/SIP username/extension, PBX server and password
     sipcfg = veconfig.get_sipcfg()
     # Get address book
