@@ -44,9 +44,10 @@ def get_sipcfg():
         srv = config.get("sip", "srv")
         pwd = config.get("sip", "passwd")
         sipcfg = dict([('ext', ext), ('srv', srv), ('pwd', pwd)])
+        syslog.syslog(syslog.LOG_ERR,"SCK SIP Account Error," + ext + "@" + srv)
         if not sipcfg == None:
             return sipcfg
-	else:
+        else:
             return None
 
     except:
