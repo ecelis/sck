@@ -50,7 +50,7 @@ def get_sipcfg():
             return None
 
     except:
-	syslog.syslog(syslog.LOG_ERR,"SCK Config SIP Account Error.")
+        syslog.syslog(syslog.LOG_ERR,"SCK SIP Account Error," + ext + "@" + srv)
 
 
 def get_audiocfg():
