@@ -194,7 +194,7 @@ try:
     address_book = veconfig.get_address_book()
     # Media Config
     media = pj.MediaConfig()
-    media.ec_options = -1 # pjsua default 0
+    media.ec_options = 0 # pjsua default 0
     media.ec_tail_len = 256 # pjsua default 256
     media.no_vad = False # disable Voice Activity Detector
     media.enable_ice = True # Enable (ICE) Interactive Connectivity Establishment
