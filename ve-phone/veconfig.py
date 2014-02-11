@@ -39,12 +39,13 @@ def get_address_book():
 
 def get_sipcfg():
     sipcfg = None
+    syslog.syslog(syslog.LOG_INFO, "SCK Trying to register in PBX")
     try:
         ext = config.get("sip", "ext")
         srv = config.get("sip", "srv")
         pwd = config.get("sip", "passwd")
         sipcfg = dict([('ext', ext), ('srv', srv), ('pwd', pwd)])
-        syslog.syslog(syslog.LOG_ERR,"SCK SIP Account Error," + ext + "@" + srv)
+        syslog.syslog(syslog.LOG_INFO,"SCK SIP Account Credetntials, " + ext + "@" + srv)
         if not sipcfg == None:
             return sipcfg
         else:
