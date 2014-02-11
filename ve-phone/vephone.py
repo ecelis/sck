@@ -67,16 +67,6 @@ def main_loop():
             elif choice == "5":
                 syslog.syslog(syslog.LOG_INFO,"SCK Dialing 5")
                 make_call("sip:1001@192.168.1.11")
-            """else:
-                for contact in address_book:
-                    # address_book = {'1': ('1001', 'AMBULANCE'), ...}
-                    if choice == str(contact):
-                        uri = "sip:"+address_book[contact][0]+"@"+sipcfg['srv']
-                        syslog.syslog(syslog.LOG_INFO, "SCK Dial "
-                            + str(contact) + " " + address_book[contact][1])
-                        # Call contact
-                        make_call(uri)
-            """
 
         except ValueError:
             syslog.syslog(syslog.LOG_NOTICE,"SCK Exception, this is weird!")
@@ -190,8 +180,6 @@ try:
     #audio = vess.VSS()
     # Get PBX/SIP username/extension, PBX server and password
     sipcfg = veconfig.get_sipcfg()
-    # Get address book
-    address_book = veconfig.get_address_book()
     # Media Config
     media = pj.MediaConfig()
     media.ec_options = 0 # pjsua default 0
