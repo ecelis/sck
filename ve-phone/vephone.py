@@ -97,12 +97,11 @@ class VeAccountCallback(pj.AccountCallback):
 	self.sem.acquire()
 
     def on_reg_state(self):
-	if self.sem:
+        if self.sem:
             if self.account.info().reg_status >= 200:
-                syslog.syslog(syslog.LOG_ERR, 'SCK registration status ' +
-                        str(self.account.info().reg_status) + ' ' +
-                        self.account.info().reg_reason)
-		self.sem.release()
+                syslog.syslog(syslog.LOG_ERR, 'SCK registration status ' + str(self.account.info().reg_status) + ' ' + self.account.info().reg_reason)
+
+            self.sem.release()
 
     def on_incoming_call(self, call):
 	#TODO A lot of stuff, call handling mainly and logging also
