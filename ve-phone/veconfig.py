@@ -65,6 +65,7 @@ def get_speedial():
         ext5 = config.get("speedial", "ext5")
         speedial = dict([('ext1', ext1), ('ext2', ext2),
             ('ext3', ext3), ('ext4', ext4), ('ext5', ext5)])
+        return speedial
 
     except:
         syslog.syslog(syslog.LOG_ERR, "SCK Can't Load Speed Dial Extensions")
