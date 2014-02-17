@@ -198,6 +198,9 @@ try:
     #audio = vess.VSS()
     # Get PBX/SIP username/extension, PBX server and password
     sipcfg = veconfig.get_sipcfg()
+    # Get Speed Dial Extensions
+    speedial = veconfig.get_speedial()
+    print speedial
     # Media Config
     media = pj.MediaConfig()
     media.ec_options = 0 # pjsua default 0
