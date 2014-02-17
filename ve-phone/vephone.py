@@ -53,21 +53,19 @@ def main_loop():
                 # Exit manually
                 syslog.syslog(syslog.LOG_NOTICE,"SCK Exit on user request!")
                 return
-            elif choice == "1":
-                syslog.syslog(syslog.LOG_INFO,"SCK Dialing 1")
-                make_call("sip:1001@192.168.1.11")
-            elif choice == "2":
-                syslog.syslog(syslog.LOG_INFO,"SCK Dialing 2")
-                make_call("sip:1001@192.168.1.11")
-            elif choice == "3":
-                syslog.syslog(syslog.LOG_INFO,"SCK Dialing 3")
-                make_call("sip:1001@192.168.1.11")
-            elif choice == "4":
-                syslog.syslog(syslog.LOG_INFO,"SCK Dialing 4")
-                make_call("sip:1001@192.168.1.11")
-            elif choice == "5":
-                syslog.syslog(syslog.LOG_INFO,"SCK Dialing 5")
-                make_call("sip:1001@192.168.1.11")
+            else:
+                for extension in speedial:
+                    # TODO FIX this, so ugly hack
+                    if extension == "ext1":
+                        make_call(speedial['ext1'] + '@' + sipcfg['srv'])
+                    elif extension == "ext2":
+                        make_call(speedial['ext2'] + '@' + sipcfg['srv'])
+                    elif extension == "ext3":
+                        make_call(speedial['ext3'] + '@' + sipcfg['srv'])
+                    elif extension == "ext4":
+                        make_call(speedial['ext4'] + '@' + sipcfg['srv'])
+                    elif extension == "ext5":
+                        make_call(speedial['ext5'] + '@' + sipcfg['srv'])
 
         except ValueError:
             syslog.syslog(syslog.LOG_NOTICE,"SCK Exception, this is weird!")
@@ -200,7 +198,6 @@ try:
     sipcfg = veconfig.get_sipcfg()
     # Get Speed Dial Extensions
     speedial = veconfig.get_speedial()
-    print speedial
     # Media Config
     media = pj.MediaConfig()
     media.ec_options = 0 # pjsua default 0
