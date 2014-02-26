@@ -23,7 +23,7 @@ import veconfig
 #import vess
 #import vetone
 
-LOG_LEVEL = 3
+LOG_LEVEL = 2
 # Logging callback
 def log_cb(level, str, len):
     syslog.syslog(syslog.LOG_INFO,"PJSUA " + str),
@@ -40,35 +40,55 @@ def main_loop():
             # Special options are handled by *,-,+ and / characters
             if choice == "*":
                 # * enable local audio
-                syslog.syslog(syslog.LOG_INFO,"SCK Toggle Local MIC")
+                syslog.syslog(syslog.LOG_INFO,
+                        "SCK Toggle Local MIC")
                 # TODO
             elif choice == "+":
                 # Test only option, do not use it for real services!
-                syslog.syslog(syslog.LOG_INFO,"SCK Dialing TEST")
+                syslog.syslog(syslog.LOG_INFO,
+                        "SCK Dialing TEST")
                 make_call("sip:1106@sip.sdf.org")
             elif choice == "-":
                 # TODO reserved
-                syslog.syslog(syslog.LOG_INFO,"SCK - Action Reserved")
+                syslog.syslog(syslog.LOG_INFO,
+                        "SCK - Action Reserved")
             elif choice == "/":
                 # Exit manually
-                syslog.syslog(syslog.LOG_NOTICE,"SCK Exit on user request!")
+                syslog.syslog(syslog.LOG_NOTICE,
+                        "SCK Exit on user request!")
                 return
             else:
                 for extension in speedial:
                     # TODO FIX this, so ugly hack
                     if extension == "ext1":
-                        make_call(speedial['ext1'] + '@' + sipcfg['srv'])
+                        make_call('sip:' + speedial['ext1'] + 
+                                '@' + sipcfg['srv'])
+                        syslog.syslog(syslog.LOG_INFO, 
+                                "SCK Dialing " + extension)
                     elif extension == "ext2":
-                        make_call(speedial['ext2'] + '@' + sipcfg['srv'])
+                        make_call('sip:' + speedial['ext2'] + 
+                                '@' + sipcfg['srv'])
+                        syslog.syslog(syslog.LOG_INFO, 
+                                "SCK Dialing " + extension)
                     elif extension == "ext3":
-                        make_call(speedial['ext3'] + '@' + sipcfg['srv'])
+                        make_call('sip:' + speedial['ext3'] + 
+                                '@' + sipcfg['srv'])
+                        syslog.syslog(syslog.LOG_INFO, 
+                                "SCK Dialing " + extension)
                     elif extension == "ext4":
-                        make_call(speedial['ext4'] + '@' + sipcfg['srv'])
+                        make_call('sip:' + speedial['ext4'] + 
+                                '@' + sipcfg['srv'])
+                        syslog.syslog(syslog.LOG_INFO, 
+                                "SCK Dialing " + extension)
                     elif extension == "ext5":
-                        make_call(speedial['ext5'] + '@' + sipcfg['srv'])
+                        make_call('sip:' + speedial['ext5'] + 
+                                '@' + sipcfg['srv'])
+                        syslog.syslog(syslog.LOG_INFO, 
+                                "SCK Dialing " + extension)
 
         except ValueError:
-            syslog.syslog(syslog.LOG_NOTICE,"SCK Exception, this is weird!")
+            syslog.syslog(syslog.LOG_NOTICE,
+                    "SCK Exception, this is weird!")
 
 	    continue
 
