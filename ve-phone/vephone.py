@@ -18,7 +18,6 @@ import sys
 import pjsua as pj
 import threading
 import syslog
-#import asgetch as gc
 import veconfig
 import vewiring as vw
 #import vess
@@ -31,46 +30,47 @@ def log_cb(level, str, len):
 
 
 def main_loop():
-    while True:
-        syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
+    syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
 
+    while True:
         try:
             # wait for CB pin input
             choice = listenButton()
-            
+            vw.delay()
+
             if choice == "women":
                 make_call('sip:' + speedial['ext1'] + 
                     '@' + sipcfg['srv'])
                 syslog.syslog(syslog.LOG_INFO, 
-                    "SCK Dialing " + extension)
+                    "SCK Dialing ext1")
 
 
             if choice == "pc":
                 make_call('sip:' + speedial['ext2'] + 
                     '@' + sipcfg['srv'])
                 syslog.syslog(syslog.LOG_INFO, 
-                    "SCK Dialing " + extension)
+                    "SCK Dialing ext2")
 
 
             if choice == "police":
                 make_call('sip:' + speedial['ext3'] + 
                     '@' + sipcfg['srv'])
                 syslog.syslog(syslog.LOG_INFO, 
-                    "SCK Dialing " + extension)
+                    "SCK Dialing ext3")
 
 
             if choice == "cr":
                 make_call('sip:' + speedial['ext4'] + 
                     '@' + sipcfg['srv'])
                 syslog.syslog(syslog.LOG_INFO, 
-                    "SCK Dialing " + extension)
+                    "SCK Dialing ext4")
 
 
             if choice == "fire":
                 make_call('sip:' + speedial['ext5'] + 
                     '@' + sipcfg['srv'])
                 syslog.syslog(syslog.LOG_INFO, 
-                    "SCK Dialing " + extension)
+                    "SCK Dialing ext5")
 
 
             """if choice == "siren":
