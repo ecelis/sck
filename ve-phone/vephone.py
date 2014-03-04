@@ -18,8 +18,9 @@ import sys
 import pjsua as pj
 import threading
 import syslog
-import asgetch as gc
+#import asgetch as gc
 import veconfig
+import vewiring as vw
 #import vess
 #import vetone
 
@@ -34,57 +35,50 @@ def main_loop():
         syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
 
         try:
-            # Read only one character from standard input
-            getch = gc._Getch()
-            choice = getch()
-            # Special options are handled by *,-,+ and / characters
-            if choice == "*":
-                # * enable local audio
-                syslog.syslog(syslog.LOG_INFO,
-                        "SCK Toggle Local MIC")
-                # TODO
-            elif choice == "+":
-                # Test only option, do not use it for real services!
-                syslog.syslog(syslog.LOG_INFO,
-                        "SCK Dialing TEST")
-                make_call("sip:1106@sip.sdf.org")
-            elif choice == "-":
-                # TODO reserved
-                syslog.syslog(syslog.LOG_INFO,
-                        "SCK - Action Reserved")
-            elif choice == "/":
-                # Exit manually
-                syslog.syslog(syslog.LOG_NOTICE,
-                        "SCK Exit on user request!")
-                return
-            else:
-                for extension in speedial:
-                    # TODO FIX this, so ugly hack
-                    if extension == "ext1":
-                        make_call('sip:' + speedial['ext1'] + 
-                                '@' + sipcfg['srv'])
-                        syslog.syslog(syslog.LOG_INFO, 
-                                "SCK Dialing " + extension)
-                    elif extension == "ext2":
-                        make_call('sip:' + speedial['ext2'] + 
-                                '@' + sipcfg['srv'])
-                        syslog.syslog(syslog.LOG_INFO, 
-                                "SCK Dialing " + extension)
-                    elif extension == "ext3":
-                        make_call('sip:' + speedial['ext3'] + 
-                                '@' + sipcfg['srv'])
-                        syslog.syslog(syslog.LOG_INFO, 
-                                "SCK Dialing " + extension)
-                    elif extension == "ext4":
-                        make_call('sip:' + speedial['ext4'] + 
-                                '@' + sipcfg['srv'])
-                        syslog.syslog(syslog.LOG_INFO, 
-                                "SCK Dialing " + extension)
-                    elif extension == "ext5":
-                        make_call('sip:' + speedial['ext5'] + 
-                                '@' + sipcfg['srv'])
-                        syslog.syslog(syslog.LOG_INFO, 
-                                "SCK Dialing " + extension)
+            # wait for CB pin input
+            choice = listenButton()
+            
+            if choice == "women":
+                make_call('sip:' + speedial['ext1'] + 
+                    '@' + sipcfg['srv'])
+                syslog.syslog(syslog.LOG_INFO, 
+                    "SCK Dialing " + extension)
+
+
+            if choice == "pc":
+                make_call('sip:' + speedial['ext2'] + 
+                    '@' + sipcfg['srv'])
+                syslog.syslog(syslog.LOG_INFO, 
+                    "SCK Dialing " + extension)
+
+
+            if choice == "police":
+                make_call('sip:' + speedial['ext3'] + 
+                    '@' + sipcfg['srv'])
+                syslog.syslog(syslog.LOG_INFO, 
+                    "SCK Dialing " + extension)
+
+
+            if choice == "cr":
+                make_call('sip:' + speedial['ext4'] + 
+                    '@' + sipcfg['srv'])
+                syslog.syslog(syslog.LOG_INFO, 
+                    "SCK Dialing " + extension)
+
+
+            if choice == "fire":
+                make_call('sip:' + speedial['ext5'] + 
+                    '@' + sipcfg['srv'])
+                syslog.syslog(syslog.LOG_INFO, 
+                    "SCK Dialing " + extension)
+
+
+            """if choice == "siren":
+                make_call('sip:' + speedial['ext1'] + 
+                    '@' + sipcfg['srv'])
+                syslog.syslog(syslog.LOG_INFO, 
+                    "SCK Dialing " + extension)"""
+
 
         except ValueError:
             syslog.syslog(syslog.LOG_NOTICE,
