@@ -36,7 +36,8 @@ def main_loop():
         try:
             # wait for CB pin input
             choice = listenButton()
-            vw.delay()
+            if choice is not None:
+                vw.delay()
 
             if choice == "women":
                 make_call('sip:' + speedial['ext1'] + 
