@@ -18,6 +18,9 @@ import sys
 import syslog
 import wiringpi2 as wp
 
+HIGH = 1
+LOW = 0
+
 IN_WOMEN = 0
 IN_POLICE = 0
 IN_CR = 0
@@ -74,8 +77,9 @@ def delay():
 
 
 def speaker_on():
-    pass
+    wp.digitalWrite(PIN_SPEAKER, HIGH)
+    return 1
 
 def speaker_off():
-    pass
-
+    wp.digitalWrite(PIN_SPEAKER, LOW)
+    return 0

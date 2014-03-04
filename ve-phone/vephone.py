@@ -30,14 +30,20 @@ def log_cb(level, str, len):
 
 
 def main_loop():
+    speaker_state = None
     syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
 
     while True:
         try:
             # wait for CB pin input
-            choice = listenButton()
+            choice = vw.listenButton()
+            # Check if a button has been pushed
             if choice is not None:
                 vw.delay()
+
+            # Check speaker status
+            if speaker_state == 0:
+                vw.speaker_off()
 
             if choice == "women":
                 make_call('sip:' + speedial['ext1'] + 
@@ -45,20 +51,11 @@ def main_loop():
                 syslog.syslog(syslog.LOG_INFO, 
                     "SCK Dialing ext1")
 
-
-            if choice == "pc":
-                make_call('sip:' + speedial['ext2'] + 
-                    '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO, 
-                    "SCK Dialing ext2")
-
-
             if choice == "police":
                 make_call('sip:' + speedial['ext3'] + 
                     '@' + sipcfg['srv'])
                 syslog.syslog(syslog.LOG_INFO, 
                     "SCK Dialing ext3")
-
 
             if choice == "cr":
                 make_call('sip:' + speedial['ext4'] + 
@@ -66,20 +63,14 @@ def main_loop():
                 syslog.syslog(syslog.LOG_INFO, 
                     "SCK Dialing ext4")
 
-
             if choice == "fire":
                 make_call('sip:' + speedial['ext5'] + 
                     '@' + sipcfg['srv'])
                 syslog.syslog(syslog.LOG_INFO, 
                     "SCK Dialing ext5")
 
-
-            """if choice == "siren":
-                make_call('sip:' + speedial['ext1'] + 
-                    '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO, 
-                    "SCK Dialing " + extension)"""
-
+            if choice == "pc":
+                speaker_state = vw.speaker_on()
 
         except ValueError:
             syslog.syslog(syslog.LOG_NOTICE,
