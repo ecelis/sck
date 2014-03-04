@@ -19,51 +19,63 @@ import syslog
 import wiringpi2 as wp
 
 IN_WOMEN = 0
-IN_PC = 0
 IN_POLICE = 0
 IN_CR = 0
 IN_FIRE = 0
 IN_SIREN = 0
+IN_PC = 0
+
+OUT_SPEAKER = 1
 
 PIN_WOMEN = 23
-PIN_PC = 22
 PIN_POLICE = 19
 PIN_CR = 13
 PIN_FIRE = 15
 PIN_SIREN = 14
+PIN_PC = 22
+PIN_SPEAKER = 48
 
 DELAY = 50
 
 wp.wiringPiSetup()
 
 def listenButton():
+    res = None
     pin_women = wp.digitalRead(PIN_WOMEN)
-    pin_pc = wp.digitalRead(PIN_PC)
     pin_police = wp.digitalRead(PIN_POLICE)
     pin_cr = wp.digitalRead(PIN_CR)
     pin_fire = wp.digitalRead(PIN_FIRE)
     pin_siren = wp.digitalRead(PIN_SIREN)
+    pin_pc = wp.digitalRead(PIN_PC)
 
     if pin_women == 1:
-        return "women"
+        res = "women"
 
     if pin_pc == 1:
-        return "pc"
+        res = "pc"
 
     if pin_police == 1:
-        return "police"
+        res = "police"
 
     if pin_cr == 1:
-        return "cr"
+        res = "cr"
 
     if pin_fire == 1:
-        return "fire"
+        res = "fire"
 
     if pin_siren == 1:
-        return "siren"
+        res = "siren"
+
+    return res
 
 
 def delay():
     wp.delay(DELAY)
 
+
+def speaker_on():
+    pass
+
+def speaker_off():
+    pass
 
