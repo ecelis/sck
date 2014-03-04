@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# ValkEye SIP Phone, vephone.py
+# ValkEye SIP Phone, vewiring.py
 # Ernesto Celis <developer@celisdelafuente.net>
 # Nov. 2013
 #
@@ -62,5 +62,8 @@ def listenButton():
     if pin_siren == 1:
         return "siren"
 
+
+def delay():
+    wp.delay(DELAY)
 
 
