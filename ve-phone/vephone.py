@@ -38,12 +38,13 @@ def main_loop():
             # wait for CB pin input
             choice = vw.listenButton()
             # Check if a button has been pushed
-            if choice is not None:
-                vw.delay()
+            #if choice is not None:
+            #    vw.delay()
 
             # Check speaker status
             if speaker_state == 0:
                 vw.speaker_off()
+                speaker_state = 0
 
             if choice == "women":
                 make_call('sip:' + speedial['ext1'] + 
@@ -70,7 +71,8 @@ def main_loop():
                     "SCK Dialing ext5")
 
             if choice == "pc":
-                speaker_state = vw.speaker_on()
+                if speaker_state is not 1:
+                    speaker_state = vw.speaker_on()
 
         except ValueError:
             syslog.syslog(syslog.LOG_NOTICE,
