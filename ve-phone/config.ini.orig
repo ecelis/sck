@@ -1,12 +1,3 @@
-[database]
-# mysql user
-user: someone
-# mysql password
-passwd: secret
-# mysql host
-host: 192.168.0.0
-# mysql database name
-name: dbname
 [sip]
 # SIP Extension/user
 ext: 2002

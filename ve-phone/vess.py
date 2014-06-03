@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# ValkEye sound System, vss.py 
+# ValkEye sound System, vess.py 
 # Ernesto Celis <developer@celisdelafuente.net>
 # Dic. 2013
 #
@@ -15,8 +15,10 @@
 import pyalsa.alsacard as acard
 import pyalsa.alsamixer as amixer
 import sys
-import syslog
-import veconfig
+from syslog import syslog as logger
+from syslog import LOG_INFO as log_info
+from syslog import LOG_ERR as log_err
+import veconfig as vc
 
 class VSS:
     """ValkEye Sound System factory
@@ -40,7 +42,7 @@ class _Vss:
     """Base implementation of ValkEye SIP Phone Sound system"""
 
     def __init__(self):
-	self.audiocfg = veconfig.get_audiocfg()
+	self.audiocfg = vc.get_audiocfg()
         # Get the mixer
 	self.mixer = amixer.Mixer()
 	self.mixer.attach()
