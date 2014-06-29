@@ -14,45 +14,25 @@
 
 import ConfigParser
 import os
-import syslog
-import MySQLdb as db
-
-
-def get_address_book():
-    try:
-        dbname = config.get("database", "name")
-        dbuser = config.get("database", "user")
-        dbpasswd = config.get("database", "passwd")
-        dbhost = config.get("database", "host")
-        # TODO Make it DB agnostic
-        query = ("SELECT id,extension,cid FROM sos_address_book")
-        conn = db.connect(user=dbuser, passwd=dbpasswd, host=dbhost,
-            db=dbname)
-        cursor = conn.cursor()
-        cursor.execute(query)
-        data = cursor.fetchall()
-        address_book = dict((id,(str(extension),cid)) for id,extension,cid in data)
-        return address_book
-    except:
-	syslog.syslog(syslog.LOG_ERR, "SCK Config Address Book Error, " + dbuser+"@"+dbhost+"/"+dbname)
-
+from syslog import syslog as logger
+from syslog import LOG_INFO as log_info
+from syslog import LOG_ERR as log_err
 
 def get_sipcfg():
     sipcfg = None
-    syslog.syslog(syslog.LOG_INFO, "SCK Trying to register in PBX")
+    logger(log_info, "SCK Trying to register in PBX")
     try:
         ext = config.get("sip", "ext")
         srv = config.get("sip", "srv")
         pwd = config.get("sip", "passwd")
         sipcfg = dict([('ext', ext), ('srv', srv), ('pwd', pwd)])
-        syslog.syslog(syslog.LOG_INFO,"SCK SIP Account Credetntials, " + ext + "@" + srv)
-        if not sipcfg == None:
-            return sipcfg
-        else:
-            return None
+        logger(log_info,
+                "SCK SIP Account Credentials, " + ext + "@" + srv)
+        return sipcfg
 
     except:
-        syslog.syslog(syslog.LOG_ERR,"SCK SIP Account Error," + ext + "@" + srv)
+        logger(log_err,
+                "SCK SIP Account Error," + ext + "@" + srv)
 
 
 def get_speedial():
@@ -68,43 +48,39 @@ def get_speedial():
         return speedial
 
     except:
-        syslog.syslog(syslog.LOG_ERR, "SCK Can't Load Speed Dial Extensions")
+        logger(log_err, "SCK Can't Load Speed Dial Extensions")
 
 
 def get_audiocfg():
     audiocfg = None
     try:
-	master = config.get("audio", "master")
-	pcm = config.get("audio", "pcm")
-	capture = config.get("audio", "capture")
-	cap_idx = config.get("audio", "cap_idx")
-	input_src = config.get("audio", "input_src")
-	in_idx = config.get("audio", "in_idx")
-	mic = config.get("audio", "mic")
-	mic_boost = config.get("audio", "mic_boost")
-	audiocfg = dict([('master',master),('pcm',pcm),('capture',capture),
-	    ('cap_idx',cap_idx),('input_src',input_src),('in_idx',in_idx),
-	    ('mic',mic),('mic_boost',mic_boost)])
-	if not audiocfg == None:
-            return audiocfg
-        else:
-	    return None
+        master = config.get("audio", "master")
+        pcm = config.get("audio", "pcm")
+        capture = config.get("audio", "capture")
+        cap_idx = config.get("audio", "cap_idx")
+        input_src = config.get("audio", "input_src")
+        in_idx = config.get("audio", "in_idx")
+        mic = config.get("audio", "mic")
+        mic_boost = config.get("audio", "mic_boost")
+        audiocfg = dict([('master',master), ('pcm',pcm),
+            ('capture',capture), ('cap_idx',cap_idx),
+            ('input_src',input_src), ('in_idx',in_idx),
+            ('mic',mic), ('mic_boost',mic_boost)])
+        return audiocfg
 
     except:
-	syslog.syslog(syslog.LOG_ERR,"SCK Config Audio Error.")
+        logger(log_err,"SCK Config Audio Error.")
 
 
 try:
     config = ConfigParser.RawConfigParser()
     config.read([os.path.expanduser('~/settings/config.ini'),
 	os.path.expanduser('~/.veconfig.ini'),
-        os.path.dirname(os.path.realpath(__file__))+'/config.ini',
+        os.path.dirname(os.path.realpath(__file__)) + '/config.ini',
         os.path.expanduser('~/sauron-com-kit/ve-phone/config.ini'),
-	'config.ini']
+        'config.ini']
     )
 
 except:
-    syslog.syslog(syslog.LOG_ERR, "SCK General Config Exception,")
-    pass
-
+    logger(log_err, "SCK General Config Exception,")
 

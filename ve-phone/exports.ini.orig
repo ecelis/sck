@@ -15,14 +15,25 @@
 # We map physical pins to directories under /sys/class/gpio/
 # PIN:PATH
 [DEFAULT]
-3:gpio1_pg0
-5:gpio3_pg2
-6:gpio4_pg1
-7:gpio5_pg4
-8:gpio6_pg5
-9:gpio7_pg6
-10:gpio8_pg7
-11:gpio12_pg8
-12:gpio9_pg9
-13:gpio10_pg10
-14:gpio11_pg11
+basepath:/sys/class/gpio
+directionfile:direction
+valuefile:value
+3:%(basepath)s/gpio1_pg0
+5:%(basepath)s/gpio3_pg2
+6:%(basepath)s/gpio4_pg1
+7:%(basepath)s/gpio5_pg4
+8:%(basepath)s/gpio6_pg5
+9:%(basepath)s/gpio7_pg6
+10:%(basepath)s/gpio8_pg7
+11:%(basepath)s/gpio12_pg8
+12:%(basepath)s/gpio9_pg9
+13:%(basepath)s/gpio10_pg10
+14:%(basepath)s/gpio11_pg11
+[features]
+sirena:/home/valkeye/sauron-com-kit/ve-phone/state/siren
+llave:%(14)s
+boton1:%(6)s
+boton2:%(8)s
+boton3:%(10)s
+boton4:%(12)s
+boton5:%(12)s
