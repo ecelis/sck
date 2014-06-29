@@ -50,37 +50,13 @@ def get_speedial():
     except:
         logger(log_err, "SCK Can't Load Speed Dial Extensions")
 
-
-def get_audiocfg():
-    audiocfg = None
-    try:
-        master = config.get("audio", "master")
-        pcm = config.get("audio", "pcm")
-        capture = config.get("audio", "capture")
-        cap_idx = config.get("audio", "cap_idx")
-        input_src = config.get("audio", "input_src")
-        in_idx = config.get("audio", "in_idx")
-        mic = config.get("audio", "mic")
-        mic_boost = config.get("audio", "mic_boost")
-        audiocfg = dict([('master',master), ('pcm',pcm),
-            ('capture',capture), ('cap_idx',cap_idx),
-            ('input_src',input_src), ('in_idx',in_idx),
-            ('mic',mic), ('mic_boost',mic_boost)])
-        return audiocfg
-
-    except:
-        logger(log_err,"SCK Config Audio Error.")
-
-
 try:
     config = ConfigParser.RawConfigParser()
-    config.read([os.path.expanduser('~/settings/config.ini'),
-	os.path.expanduser('~/.veconfig.ini'),
+    config.read([os.path.expanduser('/etc/sck/config.ini'),
+	os.path.expanduser('~/sck/config.ini'),
         os.path.dirname(os.path.realpath(__file__)) + '/config.ini',
-        os.path.expanduser('~/sauron-com-kit/ve-phone/config.ini'),
         'config.ini']
     )
 
 except:
     logger(log_err, "SCK General Config Exception,")
-
