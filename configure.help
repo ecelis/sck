@@ -1,0 +1,148 @@
+`configure' configures pjproject 2.x to adapt to many kinds of systems.
+
+Usage: ./aconfigure [OPTION]... [VAR=VALUE]...
+
+To assign environment variables (e.g., CC, CFLAGS...), specify them as
+VAR=VALUE.  See below for descriptions of some of the useful variables.
+
+Defaults for the options are specified in brackets.
+
+Configuration:
+  -h, --help              display this help and exit
+      --help=short        display options specific to this package
+      --help=recursive    display the short help of all the included packages
+  -V, --version           display version information and exit
+  -q, --quiet, --silent   do not print `checking ...' messages
+      --cache-file=FILE   cache test results in FILE [disabled]
+  -C, --config-cache      alias for `--cache-file=config.cache'
+  -n, --no-create         do not create output files
+      --srcdir=DIR        find the sources in DIR [configure dir or `..']
+
+Installation directories:
+  --prefix=PREFIX         install architecture-independent files in PREFIX
+                          [/usr/local]
+  --exec-prefix=EPREFIX   install architecture-dependent files in EPREFIX
+                          [PREFIX]
+
+By default, `make install' will install all the files in
+`/usr/local/bin', `/usr/local/lib' etc.  You can specify
+an installation prefix other than `/usr/local' using `--prefix',
+for instance `--prefix=$HOME'.
+
+For better control, use the options below.
+
+Fine tuning of the installation directories:
+  --bindir=DIR            user executables [EPREFIX/bin]
+  --sbindir=DIR           system admin executables [EPREFIX/sbin]
+  --libexecdir=DIR        program executables [EPREFIX/libexec]
+  --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
+  --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
+  --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
+  --libdir=DIR            object code libraries [EPREFIX/lib]
+  --includedir=DIR        C header files [PREFIX/include]
+  --oldincludedir=DIR     C header files for non-gcc [/usr/include]
+  --datarootdir=DIR       read-only arch.-independent data root [PREFIX/share]
+  --datadir=DIR           read-only architecture-independent data [DATAROOTDIR]
+  --infodir=DIR           info documentation [DATAROOTDIR/info]
+  --localedir=DIR         locale-dependent data [DATAROOTDIR/locale]
+  --mandir=DIR            man documentation [DATAROOTDIR/man]
+  --docdir=DIR            documentation root [DATAROOTDIR/doc/pjproject]
+  --htmldir=DIR           html documentation [DOCDIR]
+  --dvidir=DIR            dvi documentation [DOCDIR]
+  --pdfdir=DIR            pdf documentation [DOCDIR]
+  --psdir=DIR             ps documentation [DOCDIR]
+
+System types:
+  --build=BUILD     configure for building on BUILD [guessed]
+  --host=HOST       cross-compile to build programs to run on HOST [BUILD]
+  --target=TARGET   configure for building compilers for TARGET [HOST]
+
+Optional Features:
+  --disable-option-checking  ignore unrecognized --enable/--with options
+  --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
+  --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --disable-floating-point
+                          Disable floating point where possible
+  --enable-epoll          Use /dev/epoll ioqueue on Linux (experimental)
+  --disable-sound         Exclude sound (i.e. use null sound)
+  --disable-oss           Disable OSS audio (default: not disabled)
+  --disable-video         Disable video feature
+  --enable-ext-sound      PJMEDIA will not provide any sound device backend
+  --disable-small-filter  Exclude small filter in resampling
+  --disable-large-filter  Exclude large filter in resampling
+  --disable-speex-aec     Exclude Speex Acoustic Echo Canceller/AEC
+  --disable-g711-codec    Exclude G.711 codecs from the build
+  --disable-l16-codec     Exclude Linear/L16 codec family from the build
+  --disable-gsm-codec     Exclude GSM codec in the build
+  --disable-g722-codec    Exclude G.722 codec in the build
+  --disable-g7221-codec   Exclude G.7221 codec in the build
+  --disable-speex-codec   Exclude Speex codecs in the build
+  --disable-ilbc-codec    Exclude iLBC codec in the build
+  --enable-libsamplerate  Link with libsamplerate when available. Note that
+                          PJMEDIA_RESAMPLE_IMP must also be configured
+  --enable-resample-dll   Build libresample as shared library
+  --disable-sdl           Disable SDL (default: not disabled)
+  --disable-ffmpeg        Disable ffmpeg (default: not disabled)
+  --disable-v4l2          Disable Video4Linux2 (default: not disabled)
+  --enable-ipp            Enable Intel IPP support. Specify the Intel IPP
+                          package and samples location using IPPROOT and
+                          IPPSAMPLES env var or with --with-ipp and
+                          --with-ipp-samples options
+  --disable-ssl           Exclude SSL support the build (default: autodetect)
+
+  --disable-opencore-amr  Exclude OpenCORE AMR support from the build
+                          (default: autodetect)
+
+  --disable-silk          Exclude SILK support from the build (default:
+                          autodetect)
+
+
+Optional Packages:
+  --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
+  --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-external-speex   Use external Speex development files, not the one in
+                          "third_party" directory. When this option is set,
+                          make sure that Speex is accessible to use (hint: use
+                          CFLAGS and LDFLAGS env var to set the include/lib
+                          paths)
+  --with-external-gsm     Use external GSM codec library, not the one in
+                          "third_party" directory. When this option is set,
+                          make sure that the GSM include/lib files are
+                          accessible to use (hint: use CFLAGS and LDFLAGS env
+                          var to set the include/lib paths)
+  --with-external-pa      Use external PortAudio development files, not the
+                          one in "third_party" directory. When this option is
+                          set, make sure that PortAudio is accessible to use
+                          (hint: use CFLAGS and LDFLAGS env var to set the
+                          include/lib paths)
+  --with-sdl=DIR          Specify alternate libSDL prefix
+  --with-ffmpeg=DIR       Specify alternate FFMPEG prefix
+  --with-ipp=DIR          Specify the Intel IPP location
+  --with-ipp-samples=DIR  Specify the Intel IPP samples location
+  --with-ipp-arch=ARCH    Specify the Intel IPP ARCH suffix, e.g. "64" or
+                          "em64t. Default is blank for IA32"
+  --with-ssl=DIR          Specify alternate libssl prefix
+  --with-opencore-amrnb=DIR
+                          This option is obsolete and replaced by
+                          --with-opencore-amr=DIR
+  --with-opencore-amr=DIR Specify alternate libopencore-amr prefix
+  --with-opencore-amrwbenc=DIR
+                          Specify alternate libvo-amrwbenc prefix
+  --with-silk=DIR         Specify alternate SILK prefix
+
+Some influential environment variables:
+  CC          C compiler command
+  CFLAGS      C compiler flags
+  LDFLAGS     linker flags, e.g. -L<lib dir> if you have libraries in a
+              nonstandard directory <lib dir>
+  LIBS        libraries to pass to the linker, e.g. -l<library>
+  CPPFLAGS    (Objective) C/C++ preprocessor flags, e.g. -I<include dir> if
+              you have headers in a nonstandard directory <include dir>
+  CXX         C++ compiler command
+  CXXFLAGS    C++ compiler flags
+  CPP         C preprocessor
+
+Use these variables to override the choices made by `configure' or to help
+it to find libraries and programs with nonstandard names/locations.
+
+Report bugs to the package provider.
