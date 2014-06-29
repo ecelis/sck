@@ -18,6 +18,13 @@ from syslog import syslog as logger
 from syslog import LOG_INFO as log_info
 from syslog import LOG_ERR as log_err
 
+def get_flavor():
+    try:
+        return config.get('default','flavor')
+    except:
+        logger(log_err, 'SCK Failed to detect falvor')
+
+
 def get_sipcfg():
     sipcfg = None
     logger(log_info, "SCK Trying to register in PBX")

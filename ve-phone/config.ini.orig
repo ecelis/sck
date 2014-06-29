@@ -1,3 +1,6 @@
+[default]
+# Flavors pc, cubieboard2 and cubietruck are valid
+flavor: pc
 [sip]
 # SIP Extension/user
 ext: 2002
@@ -11,14 +14,4 @@ ext2: 1001
 ext3: 1001
 ext4: 1001
 ext5: 1001
-[audio]
-master: Master
-pcm: PCM
-# The hardware I tested had (Capture, 0) and (Capture, 1)
-capture: Capture
-cap_idx: 0
-# The hardware I tested had (Input Source, 0) and (Input Source, 1)
-input_src: Input Source
-in_idx: 0
-mic: Rear Mic
-mic_boost: Rear Mic Boost
+

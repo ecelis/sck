@@ -21,8 +21,14 @@ import threading
 from syslog import syslog as logger
 from syslog import LOG_INFO as log_info
 from syslog import LOG_ERR as log_err
-import asgetch as gc
 import veconfig as vc
+
+if vc.get_flavor() == 'pc':
+    import asgetch as gc
+elif vc.get_flavor() == 'cubieboard2':
+    import vewiring as vw
+elif vc.get_flavor() == 'cubietruck':
+    import vegpio as vw
 
 LOG_LEVEL = 2
 # Logging callback
