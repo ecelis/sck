@@ -23,14 +23,15 @@ import vewiring as vw
 #import vess
 #import vetone
 
-LOG_LEVEL = 2
+LOG_LEVEL = 3
 # Logging callback
 def log_cb(level, str, len):
     syslog.syslog(syslog.LOG_INFO,"PJSUA " + str),
 
 
 def main_loop():
-    speaker_state = None
+    ve_speaker_state = None
+    ve_call = None
     syslog.syslog(syslog.LOG_INFO, "SCK Ready!")
 
     while True:
@@ -38,41 +39,48 @@ def main_loop():
             # wait for CB pin input
             choice = vw.listenButton()
             # Check if a button has been pushed
+            # TODO Check if it makes the calls to break
             #if choice is not None:
             #    vw.delay()
 
-            # Check speaker status
-            if speaker_state == 0:
-                vw.speaker_off()
-                speaker_state = 0
-
             if choice == "women":
-                make_call('sip:' + speedial['ext1'] + 
-                    '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO, 
-                    "SCK Dialing ext1")
+                if ve_call is not 0:
+                    ve_call = make_call('sip:' + speedial['ext1'] +
+                        '@' + sipcfg['srv'])
+                    syslog.syslog(syslog.LOG_INFO,
+                        "SCK Dialing ext1")
 
             if choice == "police":
-                make_call('sip:' + speedial['ext3'] + 
+                ve_call = make_call('sip:' + speedial['ext3'] +
                     '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO, 
+                syslog.syslog(syslog.LOG_INFO,
                     "SCK Dialing ext3")
 
             if choice == "cr":
-                make_call('sip:' + speedial['ext4'] + 
+                ve_call = make_call('sip:' + speedial['ext4'] +
                     '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO, 
+                syslog.syslog(syslog.LOG_INFO,
                     "SCK Dialing ext4")
 
             if choice == "fire":
-                make_call('sip:' + speedial['ext5'] + 
+                ve_call = make_call('sip:' + speedial['ext5'] +
                     '@' + sipcfg['srv'])
-                syslog.syslog(syslog.LOG_INFO, 
+                syslog.syslog(syslog.LOG_INFO,
                     "SCK Dialing ext5")
 
-            if choice == "pc":
-                if speaker_state is not 1:
-                    speaker_state = vw.speaker_on()
+            if choice == "son":
+                if ve_speaker_state is not 1:
+                    ve_speaker_state = vw.speaker_on()
+                    syslog.syslog(syslog.LOG_INFO,
+                        "SCK Speaker Enabled")
+                    enable_speaker()
+            elif choice == "soff":
+                if ve_speaker_state is not 0:
+                    disable_speaker()
+                    ve_speaker_state = vw.speaker_off()
+                    syslog.syslog(syslog.LOG_INFO,
+                        "SCK Speaker Disabled")
+
 
         except ValueError:
             syslog.syslog(syslog.LOG_NOTICE,
@@ -90,6 +98,11 @@ def make_call(uri):
         syslog.syslog(syslog.LOG_ERR, "SCK " + str(e))
         return None
 
+def enable_speaker():
+    lib.conf_connect(0,0)
+
+def disable_speaker():
+    lib.conf_disconnect(0,0)
 
 """ Callback for handling registration on PBX """
 class VeAccountCallback(pj.AccountCallback):
@@ -112,7 +125,7 @@ class VeAccountCallback(pj.AccountCallback):
                         str(self.account.info().reg_status) + ' ' +
                         self.account.info().reg_reason
                 )
-            
+
             self.sem.release()
 
 
@@ -222,6 +235,7 @@ try:
     transport = lib.create_transport(pj.TransportType.UDP)
     # Start the library
     lib.start()
+    print lib.enum_snd_dev()
 
     if sipcfg == None:
         # Create local/user-less account
@@ -245,7 +259,7 @@ try:
     sys.exit(0)
 
 except pj.Error, e:
-    syslog.syslog(syslog.LOG_ERR, "SCK Exception: " + str(e))
+    logger(log_err, "SCK Exception: " + str(e))
     lib.destroy()
     lib = None
     sys.exit(1)

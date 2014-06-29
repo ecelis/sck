@@ -21,13 +21,6 @@ import wiringpi2 as wp
 HIGH = 1
 LOW = 0
 
-IN_WOMEN = 0
-IN_POLICE = 0
-IN_CR = 0
-IN_FIRE = 0
-IN_SIREN = 0
-IN_PC = 0
-
 OUT_SPEAKER = 1
 
 PIN_WOMEN = 23
@@ -51,22 +44,24 @@ def listenButton():
     pin_siren = wp.digitalRead(PIN_SIREN)
     pin_pc = wp.digitalRead(PIN_PC)
 
-    if pin_women == 1:
+    if pin_women == 0:
         res = "women"
 
     if pin_pc == 1:
-        res = "pc"
+        res = "son"
+    else:
+        res = "soff"
 
-    if pin_police == 1:
+    if pin_police == 0:
         res = "police"
 
-    if pin_cr == 1:
+    if pin_cr == 0:
         res = "cr"
 
-    if pin_fire == 1:
+    if pin_fire == 0:
         res = "fire"
 
-    if pin_siren == 1:
+    if pin_siren == 0:
         res = "siren"
 
     return res
