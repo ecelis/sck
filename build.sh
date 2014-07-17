@@ -2,6 +2,7 @@
 CWD=$(pwd)
 PJPDIR=third_party/pjproject-2.1.0
 FMPDIR=third_party/ffmpeg-1.2.6
+SUDO=/usr/bin/sudo
 #ENABLE_VIDEO=$1
 
 usage () {
@@ -42,7 +43,13 @@ else
 fi
 CFLAGS="-fPIC" CXXFLAGS="-fPIC" make dep
 CFLAGS="-fPIC" CXXFLAGS="-fPIC" make
-## TODO python client not ready yet
-cd $CWD/$PJPDIR/pjsip-apps/src/python
-python setup.py install
+if [ -x $SUDO ]; then
+  sudo make install
+  cd $CWD/$PJPDIR/pjsip-apps/src/python
+  sudo python setup.py install
+else
+  su -c "make install" root
+  cd $CWD/$PJPDIR/pjsip-apps/src/python
+  su -c "python setup.py install" root
+fi
 
