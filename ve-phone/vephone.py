@@ -23,13 +23,14 @@ from syslog import LOG_INFO as log_info
 from syslog import LOG_ERR as log_err
 import veconfig as vc
 
+# Global stuff
+FLAVORS = ['pc','cubieboard2','cubietruck']
 LOG_LEVEL = 3
+ve_call = None
 
 # Detect platform flavor currently supported are pc, cubieboard2 and cubietruck
-FLAVORS = ['pc','cubieboard2','cubietruck']
 _platform = vc.get_flavor()
-#if LOG_LEVEL < 2:
-logger(log_info, _platform)
+logger(log_info, u'SCK Running with ' + _platform + ' settings')
 if _platform in FLAVORS:
     if _platform == 'pc':
         import asgetch as vi
@@ -48,61 +49,37 @@ def log_cb(level, str, len):
 
 
 def main_loop():
+    ri = vi.read_input()
     logger(log_info, "SCK Ready!")
     while True:
-
         try:
-            # Read only one character from standard input
-            ri = vi.read_input()
-            #choice = ri()
+            # Read input operation
+            inr = ri()
             # Special options are handled by *,-,+ and / characters
-            if ri() == "*":
-                # * enable local audio
+            if inr == "*":
+                # TODO * enable local audio
                 logger(log_info,
                         "SCK Toggle Local MIC")
-                # TODO
-            elif ri() == "+":
-                # Test only option, do not use it for real services!
+            elif inr == "+":
+                # TODO Test only option, do not use it for real services!
                 logger(log_info,
                         "SCK Dialing TEST")
-                make_call("sip:1106@sip.sdf.org")
-            elif ri() == "-":
+                #make_call("sip:1106@sip.sdf.org")
+            elif inr == "-":
                 # TODO reserved
                 logger(log_info,
                         "SCK - Action Reserved")
-            elif ru() == "/":
+            elif inr == "/":
                 # Exit manually
                 logger(log_info,
                         "SCK Exit on user request!")
                 return
+            elif inr in ['0','1','2','3','4','5','6','7','8','9']:
+                # Only the PC version gets numbers as input
+                for speed, ext in speedial.iteritems():
+                    getattr(ve_speedial, 'ext'+inr)(ext)
             else:
-                for extension in speedial:
-                    # TODO FIX this, so ugly hack
-                    if extension == "ext1":
-                        make_call('sip:' + speedial['ext1'] + 
-                                '@' + sipcfg['srv'])
-                        logger(log_info, 
-                                "SCK Dialing " + extension)
-                    elif extension == "ext2":
-                        make_call('sip:' + speedial['ext2'] + 
-                                '@' + sipcfg['srv'])
-                        logger(log_info, 
-                                "SCK Dialing " + extension)
-                    elif extension == "ext3":
-                        make_call('sip:' + speedial['ext3'] + 
-                                '@' + sipcfg['srv'])
-                        logger(log_info, 
-                                "SCK Dialing " + extension)
-                    elif extension == "ext4":
-                        make_call('sip:' + speedial['ext4'] + 
-                                '@' + sipcfg['srv'])
-                        logger(log_info, 
-                                "SCK Dialing " + extension)
-                    elif extension == "ext5":
-                        make_call('sip:' + speedial['ext5'] + 
-                                '@' + sipcfg['srv'])
-                        logger(log_info, 
-                                "SCK Dialing " + extension)
+                logger(log_err, 'SCK Invalid input ' + inr)
 
         except ValueError:
             logger(log_info,
@@ -120,6 +97,69 @@ def make_call(uri):
     except pj.Error, e:
         logger(log_err, "SCK " + str(e))
         return None
+
+
+""" Functions triggered by speedial extensions """
+class VeSpeedial():
+    def ext0(self, ext):
+        global ve_call
+        if ve_call is None:
+            ve_call = make_call('sip:' + ext +
+                '@' + sipcfg['srv'])
+
+    def ext1(self, ext):
+        global ve_call
+        if ve_call is None:
+            ve_call = make_call('sip:' + ext +
+                '@' + sipcfg['srv'])
+
+    def ext2(self, ext):
+        global ve_call
+        if ve_call is None:
+            ve_call = make_call('sip:' + ext +
+                '@' + sipcfg['srv'])
+
+    def ext3(self, ext):
+        global ve_call
+        if ve_call is None:
+            ve_call = make_call('sip:' + ext +
+                '@' + sipcfg['srv'])
+
+    def ext4(self, ext):
+        global ve_call
+        if ve_call is None:
+            ve_call = make_call('sip:' + ext +
+                '@' + sipcfg['srv'])
+
+    def ext5(self, ext):
+        global ve_call
+        if ve_call is None:
+            ve_call = make_call('sip:' + ext +
+                '@' + sipcfg['srv'])
+
+    def ext6(self, ext):
+        global ve_call
+        if ve_call is None:
+            ve_call = make_call('sip:' + ext +
+                '@' + sipcfg['srv'])
+
+    def ext7(self, ext):
+        global ve_call
+        if ve_call is None:
+            ve_call = make_call('sip:' + ext +
+                '@' + sipcfg['srv'])
+
+    def ext8(self, ext):
+        global ve_call
+        if ve_call is None:
+            ve_call = make_call('sip:' + ext +
+                '@' + sipcfg['srv'])
+
+    def ext9(self, ext):
+        global ve_call
+        if ve_call is None:
+            ve_call = make_call('sip:' + ext +
+                '@' + sipcfg['srv'])
 
 
 """ Callback for handling registration on PBX """
@@ -237,8 +277,7 @@ try:
     acc.set_callback(acc_cb)
     acc_cb.wait()
     # Global variables
-    ve_local_audio = False
-    ve_call = None
+    ve_speedial = VeSpeedial()
     # main loop
     main_loop()
     # We're done, shutdown the library

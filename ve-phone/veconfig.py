@@ -26,8 +26,6 @@ def get_flavor():
 
 
 def get_sipcfg():
-    sipcfg = None
-    logger(log_info, "SCK Trying to register in PBX")
     try:
         return dict(config.items('sip'))
 
@@ -37,7 +35,6 @@ def get_sipcfg():
 
 
 def get_speedial():
-    speedial = None
     try:
         return dict(config.items('speedial'))
 

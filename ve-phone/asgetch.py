@@ -24,7 +24,7 @@ class read_input:
         except ImportError:
             self.impl = _GetchUnix()
 
-    def __call__(self): 
+    def __call__(self):
 	return self.impl()
 
 
