@@ -5,5 +5,6 @@ config.status
 ve-phone/config.ini
 */bin
 */lib
+.vagrant
 
 

@@ -17,7 +17,7 @@ class _GetchUnix:
 
 """Gets a single character from standard input.  Does not echo to the
 screen."""
-class _Getch:
+class read_input:
     def __init__(self):
         try:
             self.impl = _GetchWindows()

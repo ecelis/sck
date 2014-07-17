@@ -23,43 +23,54 @@ from syslog import LOG_INFO as log_info
 from syslog import LOG_ERR as log_err
 import veconfig as vc
 
-if vc.get_flavor() == 'pc':
-    import asgetch as gc
-elif vc.get_flavor() == 'cubieboard2':
-    import vewiring as vw
-elif vc.get_flavor() == 'cubietruck':
-    import vegpio as vw
+LOG_LEVEL = 3
 
-LOG_LEVEL = 2
+# Detect platform flavor currently supported are pc, cubieboard2 and cubietruck
+FLAVORS = ['pc','cubieboard2','cubietruck']
+_platform = vc.get_flavor()
+#if LOG_LEVEL < 2:
+logger(log_info, _platform)
+if _platform in FLAVORS:
+    if _platform == 'pc':
+        import asgetch as vi
+    elif _platform == 'cubieboard2':
+        import vewiring as vi
+    elif _platform == 'cubietruck':
+        import vegpio as vi
+else:
+    logger(log_err, u'SCK Unsupported platform')
+    sys.exit(1)
+
+
 # Logging callback
 def log_cb(level, str, len):
     logger(log_info,"PJSUA " + str),
-    logger(log_info, "SCK Ready!")
 
 
 def main_loop():
+    logger(log_info, "SCK Ready!")
     while True:
 
         try:
             # Read only one character from standard input
-            getch = gc._Getch()
-            choice = getch()
+            ri = vi.read_input()
+            #choice = ri()
             # Special options are handled by *,-,+ and / characters
-            if choice == "*":
+            if ri() == "*":
                 # * enable local audio
                 logger(log_info,
                         "SCK Toggle Local MIC")
                 # TODO
-            elif choice == "+":
+            elif ri() == "+":
                 # Test only option, do not use it for real services!
                 logger(log_info,
                         "SCK Dialing TEST")
                 make_call("sip:1106@sip.sdf.org")
-            elif choice == "-":
+            elif ri() == "-":
                 # TODO reserved
                 logger(log_info,
                         "SCK - Action Reserved")
-            elif choice == "/":
+            elif ru() == "/":
                 # Exit manually
                 logger(log_info,
                         "SCK Exit on user request!")
@@ -109,19 +120,6 @@ def make_call(uri):
     except pj.Error, e:
         logger(log_err, "SCK " + str(e))
         return None
-
-""" Toggle local audio On and Off """
-def local_audio_toggle():
-    global ve_local_audio
-    if ve_local_audio == False:
-        # TODO Check if there is no ongoing call
-        ve_local_audio = True
-        lib.conf_connect(0, 0)
-        log.syslog(log.LOG_INFO, 'SCK Local Audio Enabled')
-    elif ve_local_audio == True:
-        lib.conf_disconnect(0, 0)
-        ve_local_audio = False
-        log.syslog(log.LOG_INFO, 'SCK Local Audio Disabled')
 
 
 """ Callback for handling registration on PBX """
@@ -197,39 +195,11 @@ class VeCallCallback(pj.CallCallback):
     # Notification when call's media state changed
     def on_media_state(self):
         global lib
-	    #global tone
         if self.call.info().media_state == pj.MediaState.ACTIVE:
             # Connect the call to sound device
-            #VeTone().ring_stop(tone)
             call_slot = self.call.info().conf_slot
             lib.conf_connect(call_slot, 0)
             lib.conf_connect(0, call_slot)
-
-
-class VeTone:
-    def ring_start(self):
-        global tone
-        tone = lib.create_player(os.path.dirname(
-            os.path.realpath(__file__)) + "/sounds/tone.wav",
-            True
-        )
-        lib.conf_connect(tone, 0)
-        return tone
-
-
-    def ring_stop(self, tone):
-        lib.conf_disconnect(tone, 0)
-        lib.player_destroy(tone)
-
-
-    def incoming(self):
-        global tone
-        tone = lib.create_player(
-                os.path.dirname(os.path.realpath(__file__)) +
-                "/sounds/three-tones.wav", False
-	    )
-        lib.conf_connect(tone, 0)
-        return tone
 
 
 try:
@@ -253,7 +223,6 @@ try:
     transport = lib.create_transport(pj.TransportType.UDP)
     # Start the library
     lib.start()
-
     if sipcfg == None:
         # Create local/user-less account
         acc = lib.create_account_for_transport(transport)
@@ -261,9 +230,8 @@ try:
         # Register on PBX
         acc = lib.create_account(
                 pj.AccountConfig(sipcfg['srv'], sipcfg['ext'],
-                    sipcfg['pwd'])
+                    sipcfg['passwd'])
         )
-
     # Set the account call back
     acc_cb = VeAccountCallback(acc)
     acc.set_callback(acc_cb)

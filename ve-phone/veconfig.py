@@ -22,20 +22,14 @@ def get_flavor():
     try:
         return config.get('default','flavor')
     except:
-        logger(log_err, 'SCK Failed to detect falvor')
+        logger(log_err, 'SCK Failed to detect flavor')
 
 
 def get_sipcfg():
     sipcfg = None
     logger(log_info, "SCK Trying to register in PBX")
     try:
-        ext = config.get("sip", "ext")
-        srv = config.get("sip", "srv")
-        pwd = config.get("sip", "passwd")
-        sipcfg = dict([('ext', ext), ('srv', srv), ('pwd', pwd)])
-        logger(log_info,
-                "SCK SIP Account Credentials, " + ext + "@" + srv)
-        return sipcfg
+        return dict(config.items('sip'))
 
     except:
         logger(log_err,
@@ -45,24 +39,17 @@ def get_sipcfg():
 def get_speedial():
     speedial = None
     try:
-        ext1 = config.get("speedial", "ext1")
-        ext2 = config.get("speedial", "ext2")
-        ext3 = config.get("speedial", "ext3")
-        ext4 = config.get("speedial", "ext4")
-        ext5 = config.get("speedial", "ext5")
-        speedial = dict([('ext1', ext1), ('ext2', ext2),
-            ('ext3', ext3), ('ext4', ext4), ('ext5', ext5)])
-        return speedial
+        return dict(config.items('speedial'))
 
     except:
         logger(log_err, "SCK Can't Load Speed Dial Extensions")
 
 try:
     config = ConfigParser.RawConfigParser()
+    config.readfp(open('config.ini'))
     config.read([os.path.expanduser('/etc/sck/config.ini'),
 	os.path.expanduser('~/sck/config.ini'),
-        os.path.dirname(os.path.realpath(__file__)) + '/config.ini',
-        'config.ini']
+        os.path.dirname(os.path.realpath(__file__)) + '/config.ini']
     )
 
 except:
