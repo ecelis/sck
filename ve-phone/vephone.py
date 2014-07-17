@@ -75,9 +75,10 @@ def main_loop():
                         "SCK Exit on user request!")
                 return
             elif inr in ['0','1','2','3','4','5','6','7','8','9']:
-                # Only the PC version gets numbers as input
-                for speed, ext in speedial.iteritems():
-                    getattr(ve_speedial, 'ext'+inr)(ext)
+                # Only the PC version takes the whole range of digits as input
+                if _platform == 'pc':
+                    for speed, ext in speedial.iteritems():
+                        getattr(ve_speedial, 'ext'+inr)(ext)
             else:
                 logger(log_err, 'SCK Invalid input ' + inr)
 
@@ -104,60 +105,80 @@ class VeSpeedial():
     def ext0(self, ext):
         global ve_call
         if ve_call is None:
+            logger(log_info, 'SCK Dialing ' +
+                    sys._getframe().f_code.co_name)
             ve_call = make_call('sip:' + ext +
                 '@' + sipcfg['srv'])
 
     def ext1(self, ext):
         global ve_call
         if ve_call is None:
+            logger(log_info, 'SCK Dialing ' +
+                    sys._getframe().f_code.co_name)
             ve_call = make_call('sip:' + ext +
                 '@' + sipcfg['srv'])
 
     def ext2(self, ext):
         global ve_call
         if ve_call is None:
+            logger(log_info, 'SCK Dialing ' +
+                    sys._getframe().f_code.co_name)
             ve_call = make_call('sip:' + ext +
                 '@' + sipcfg['srv'])
 
     def ext3(self, ext):
         global ve_call
         if ve_call is None:
+            logger(log_info, 'SCK Dialing ' +
+                    sys._getframe().f_code.co_name)
             ve_call = make_call('sip:' + ext +
                 '@' + sipcfg['srv'])
 
     def ext4(self, ext):
         global ve_call
         if ve_call is None:
+            logger(log_info, 'SCK Dialing ' +
+                    sys._getframe().f_code.co_name)
             ve_call = make_call('sip:' + ext +
                 '@' + sipcfg['srv'])
 
     def ext5(self, ext):
         global ve_call
         if ve_call is None:
+            logger(log_info, 'SCK Dialing ' +
+                    sys._getframe().f_code.co_name)
             ve_call = make_call('sip:' + ext +
                 '@' + sipcfg['srv'])
 
     def ext6(self, ext):
         global ve_call
         if ve_call is None:
+            logger(log_info, 'SCK Dialing ' +
+                    sys._getframe().f_code.co_name)
             ve_call = make_call('sip:' + ext +
                 '@' + sipcfg['srv'])
 
     def ext7(self, ext):
         global ve_call
         if ve_call is None:
+            logger(log_info, 'SCK Dialing ' +
+                    sys._getframe().f_code.co_name)
             ve_call = make_call('sip:' + ext +
                 '@' + sipcfg['srv'])
 
     def ext8(self, ext):
         global ve_call
         if ve_call is None:
+            logger(log_info, 'SCK Dialing ' +
+                    sys._getframe().f_code.co_name)
             ve_call = make_call('sip:' + ext +
                 '@' + sipcfg['srv'])
 
     def ext9(self, ext):
         global ve_call
         if ve_call is None:
+            logger(log_info, 'SCK Dialing ' +
+                    sys._getframe().f_code.co_name)
             ve_call = make_call('sip:' + ext +
                 '@' + sipcfg['srv'])
 
