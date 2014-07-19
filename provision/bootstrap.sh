@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Update OS packages
-yum -y update
+yum -x 'kernel*' -y --skip-broken update
 yum -y groupinstall Base
 yum -y groupinstall "Development Tools"
 # Install required dependencies, it assumes a REHEL6 base and Development Tools
