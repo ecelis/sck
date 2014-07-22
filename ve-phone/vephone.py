@@ -26,7 +26,7 @@ import veconfig as vc
 # Global stuff
 FLAVORS = ['pc','cubieboard2','cubietruck']
 DIGITS = ['0','1','2','3','4','5','6','7','8','9']
-PINOUT = ['ext1','ext2','ext3','ext4','ext5','siren','ext1',]
+PINOUT = ['ext1','ext2','ext3','ext4','ext5','siren','spk']
 LOG_LEVEL = 3
 ve_call = None
 
@@ -81,6 +81,17 @@ def main_loop():
                 if _platform == 'pc':
                     for speed, ext in speedial.iteritems():
                         getattr(ve_speedial, 'ext'+inr)(ext)
+                else:
+                    logger(log_info,
+                        u'SCK trying to dial with digits in an unsupported platform')
+            elif inr in PINOUT:
+                if _platform == 'cubieboard2':
+                    for speed, ext in speedial.iteritems():
+                        getattr(ve_speedial, inr)(ext)
+                else:
+                    logger(log_info,
+                        u'SCK trying to dial with GPIO in an unsupported platform')
+
             else:
                 logger(log_err, 'SCK Invalid input ' + inr)
 
