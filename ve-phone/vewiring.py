@@ -18,64 +18,41 @@ import sys
 import syslog
 import wiringpi2 as wp
 
+# Define what value is HIGH and LOW for the board pinout
 HIGH = 1
 LOW = 0
-
-OUT_SPEAKER = 1
-
-PIN_WOMEN = 23
-PIN_POLICE = 19
-PIN_CR = 13
-PIN_FIRE = 15
-PIN_SIREN = 14
-PIN_PC = 22
-PIN_SPEAKER = 48
-
+# Defines if 0 or 1 received in the pin triggers actions
+TRIG = 0
+# Time in ms the delay function will use
 DELAY = 50
-
+# TODO The dictionary should come from configuration file to allow
+# easy configuration of pinout
+PINOUT = {
+    'ext1':23,
+    'ext2':19,
+    'ext3':13,
+    'ext4':15,
+    'ext5':22,
+    'siren':14,
+    'spk':48
+}
+# The library should be initialized before use
 wp.wiringPiSetup()
 
-def listenButton():
-    res = None
-    pin_women = wp.digitalRead(PIN_WOMEN)
-    pin_police = wp.digitalRead(PIN_POLICE)
-    pin_cr = wp.digitalRead(PIN_CR)
-    pin_fire = wp.digitalRead(PIN_FIRE)
-    pin_siren = wp.digitalRead(PIN_SIREN)
-    pin_pc = wp.digitalRead(PIN_PC)
+""" Read input from pins """
+def read_input():
+    for ext, pin in PINOUT:
+        if wp.digitalRead(pin) == TRIG:
+            return ext
+        else:
+            return None
 
-    if pin_women == 0:
-        res = "women"
 
-    if pin_pc == 1:
-        res = "son"
-    else:
-        res = "soff"
-
-    if pin_police == 0:
-        res = "police"
-
-    if pin_cr == 0:
-        res = "cr"
-
-    if pin_fire == 0:
-        res = "fire"
-
-    if pin_siren == 0:
-        res = "siren"
-
-    return res
-
+""" Changes the state of one pin HIGH = 1 LOW = 0 returns the state """
+def change_state(pin_number, state):
+    wp.digitalWrite(pin_number, state)
+    return state
 
 
 def delay():
     wp.delay(DELAY)
-
-
-def speaker_on():
-    wp.digitalWrite(PIN_SPEAKER, HIGH)
-    return 1
-
-def speaker_off():
-    wp.digitalWrite(PIN_SPEAKER, LOW)
-    return 0

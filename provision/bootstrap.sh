@@ -6,6 +6,7 @@ yum -y groupinstall Base
 yum -y groupinstall "Development Tools"
 # Install required dependencies, it assumes a REHEL6 base and Development Tools
 yum -y install python-devel \
+  python-setuptools \
   alsa-lib \
   alsa-lib-devel \
   portaudio \

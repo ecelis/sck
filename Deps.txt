@@ -1,9 +1,0 @@
-sudo apt-get install liblinphone-dev libasound2 libasound2-dev liblinphone3 libmediastreamer0 libmediastreamer-dev libortp8 libortp-dev libosip2-4 libosip2-dev libsamplerate0 libsamplerate0-dev libspeex1 libspeex-dev libtool intltool libgtk2.0-dev libosip2-dev libexosip2-dev libspeexdsp-dev libavcodec-dev libswscale-dev libx11-dev libvxl1-dev libgl1-mesa-dev libglew1.6-dev libv4l-dev libreadline-dev libgsm1-dev libtheora-dev libsoup2.4-dev libsqlite3-dev libupnp4-dev libupnp3 libupnp-dev
-
-
-: Unable to locate package liblinphone3
-E: Package 'libmediastreamer0' has no installation candidate
-E: Unable to locate package libosip2-4
-E: Package 'libvxl1-dev' has no installation candidate
-E: Unable to locate package libupnp
-
