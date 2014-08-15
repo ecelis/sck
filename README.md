@@ -82,10 +82,22 @@ Edit the file with your PBX user name and password, speed dial extension
 numbers and audio settings for your sound card if needed
 
 
+### For Android
+
+  android-ndk-r9d# export ANDROID_NDK_ROOT=$(pwd)
+  cd /pjproject-2.2.1
+  ./configure-android
+  make clean
+  make dep
+  make
+
+
 Run
 ---
 
-   cd sauron-com-kit/ve-phone python vephone.py
+
+   cd sauron-com-kit/ve-phone
+   python vephone.py
 
 
 Enjoy!

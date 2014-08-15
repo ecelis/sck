@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 CWD=$(pwd)
-PJPDIR=third_party/pjproject-2.1.0
+PJPDIR=third_party/pjproject-2.2.1
 FMPDIR=third_party/ffmpeg-1.2.6
 #ENABLE_VIDEO=$1
 
