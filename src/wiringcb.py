@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# ValkEye SIP Phone, vewiring.py
+# ValkEye SIP Phone, wiringcb.py
 # Ernesto Celis <developer@celisdelafuente.net>
 # Nov. 2013
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# ValkEye SIP Phone, vegpio.py, reads gpio values from procfs
+# ValkEye SIP Phone, gpio_api.py, reads gpio values from procfs
 # Ernesto Celis <developer@celisdelafuente.net>
 # Nov. 2013
 #
@@ -13,12 +13,9 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
 #
 
-import os
-import sys
 import ConfigParser
 from syslog import syslog as logger
-from syslog import LOG_INFO as log_info
-from syslog import LOG_ERR as log_err
+from syslog import LOG_ERR
 
 INPUT = 0
 OUTPUT = 1
@@ -47,7 +44,7 @@ def get_ports():
             ('button_5', config.get('features', 'boton5'))
             ])
     except:
-        logger(log_err, 'SCK GPIO Expansion Ports Config Error')
+        logger(LOG_ERR, 'SCK GPIO Expansion Ports Config Error')
         return None
 
 
@@ -57,12 +54,13 @@ def _read_port_value(gpio_value):
             return line.rstrip('\n')
 
 
-def read_ports(ports):
+def read_input(ports):
     port = {}
     try:
         for key, gpio in ports.iteritems():
             port[key] = key, _read_port_value(gpio + '/value')
+
         return port
     except:
-        logger(log_err, 'SCK GPIO Read Error')
+        logger(LOG_ERR, 'SCK GPIO Read Error')
         return None

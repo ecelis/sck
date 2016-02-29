@@ -1,8 +1,8 @@
-# ValkEye SIP Phone, veconfig.py
+# config.py is part of SCK
+# Copyright 2013, 2014, 2015, 2016
 # Ernesto Celis <developer@celisdelafuente.net>
-# Nov. 2013
 #
-# This program is distributed in the hope that it will be useful,
+# SCK is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
@@ -15,14 +15,14 @@
 import ConfigParser
 import os
 from syslog import syslog as logger
-from syslog import LOG_INFO as log_info
-from syslog import LOG_ERR as log_err
+from syslog import LOG_ERR
+
 
 def get_flavor():
     try:
-        return config.get('default','flavor')
+        return config.get('default', 'flavor')
     except:
-        logger(log_err, 'SCK Failed to detect flavor')
+        logger(LOG_ERR, 'SCK Failed to detect flavor')
 
 
 def get_sipcfg():
@@ -30,8 +30,7 @@ def get_sipcfg():
         return dict(config.items('sip'))
 
     except:
-        logger(log_err,
-                "SCK Error while reading SIP Auth Credentials")
+        logger(LOG_ERR, "SCK Error while reading SIP Auth Credentials")
 
 
 def get_speedial():
@@ -39,15 +38,16 @@ def get_speedial():
         return dict(config.items('speedial'))
 
     except:
-        logger(log_err, "SCK Can't Load Speed Dial Extensions")
+        logger(LOG_ERR, "SCK Can't Load Speed Dial Extensions")
+
 
 try:
     config = ConfigParser.RawConfigParser()
     config.readfp(open('config.ini'))
     config.read([os.path.expanduser('/etc/sck/config.ini'),
-	os.path.expanduser('~/sck/config.ini'),
-        os.path.dirname(os.path.realpath(__file__)) + '/config.ini']
-    )
+                 os.path.expanduser('~/sck/config.ini'),
+                 os.path.dirname(os.path.realpath(__file__)) + '/config.ini']
+                )
 
 except:
-    logger(log_err, "SCK General Config Exception,")
+    logger(LOG_ERR, "SCK General Config Exception,")
