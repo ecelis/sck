@@ -7,3 +7,4 @@ ve-phone/config.ini
 */lib
 .vagrant
 third_party/WiringCB-python/WiringPi/gpio/gpio
+ENV

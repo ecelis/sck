@@ -1,26 +1,28 @@
 #!/usr/bin/env bash
+##
+##  Copyright 2014,2015,2016 Ernesto Celis <ecelis@member.fsf.org>
+##
+##  This file is part of SCK.
+##
+##  SCK is free software: you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation, either version 3 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#######################################################################
+
+PJS_VERSION=${PJS_VERSION:-2.4.5}
 CWD=$(pwd)
-PJPDIR=third_party/pjproject-2.1.0
-FMPDIR=third_party/ffmpeg-1.2.6
-#ENABLE_VIDEO=$1
+PJPDIR=third_party/pjproject-$PJS_VERSION
+VIDEO=${VIDEO:-1}
 
-usage () {
-#TODO
-  echo "Usage: $0 TODO"
-  exit 1
-}
-
-#[[ $# -eq 0 ]] && usage
-echo -e "Enable video support? [y/N]"
-read ENABLE_VIDEO
-
-if [[ $ENABLE_VIDEO == 'y' ]] ; then
-  cd $CWD/$FMPDIR
-  make distclean
-  ./configure --enable-shared --disable-static --enable-memalign-hack
-  make -j2
-  make install
-fi
 
 cd $CWD/$PJPDIR
 make distclean
@@ -36,13 +38,13 @@ find $CWD/$PJDIR -type f -name '.*.depend*' -exec rm {} \;
 #rm -f build/os-auto.mak
 #rm -f build/cc-auto.mak
 #rm -f build.mak
-if [[ $ENABLE_VIDEO == 'y' ]] ; then
+if [[ $VIDEO == 1 ]] ; then
   ./configure
 else
   ./configure --disable-video --disable-ffmpeg --disable-v4l2
 fi
-CFLAGS="-fPIC" CXXFLAGS="-fPIC" make dep
-CFLAGS="-fPIC" CXXFLAGS="-fPIC" make
+CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" make dep
+CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" make
 make install
 cd $CWD/$PJPDIR/pjsip-apps/src/python
 python setup.py install
