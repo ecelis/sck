@@ -46,5 +46,8 @@ fi
 CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" make dep
 CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" make
 make install
+cd $CWD
+virtualenv ENV
+. ENV/bin/activate
 cd $CWD/$PJPDIR/pjsip-apps/src/python
 python setup.py install
