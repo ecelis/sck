@@ -22,11 +22,13 @@ PJS_VERSION=${PJS_VERSION:-2.4.5}
 CWD=$(pwd)
 PJPDIR=third_party/pjproject-$PJS_VERSION
 VIDEO=${VIDEO:-1}
+CLEAN=${CLEAN:-1}
 
 
 cd $CWD/$PJPDIR
-make distclean
-find $CWD/$PJDIR -type f -name '.*.depend*' -exec rm {} \;
+if [[ $CLEAN == 1 ]] ; then
+  make distclean
+  find $CWD/$PJDIR -type f -name '.*.depend*' -exec rm {} \;
 #rm -f pjmedia/include/pjmedia/config_auto.h
 #rm -f pjmedia/include/pjmedia-codec/config_auto.h
 #rm -f pjmedia/build/os-auto.mak
@@ -38,6 +40,7 @@ find $CWD/$PJDIR -type f -name '.*.depend*' -exec rm {} \;
 #rm -f build/os-auto.mak
 #rm -f build/cc-auto.mak
 #rm -f build.mak
+fi
 if [[ $VIDEO == 1 ]] ; then
   ./configure
 else
@@ -45,9 +48,13 @@ else
 fi
 CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" make dep
 CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" make
-make install
+sudo make install
 cd $CWD
-virtualenv ENV
-. ENV/bin/activate
+if [[ $CLEAN == 1 ]] ; then
+  rm -rf ENV
+  python3 -m venv ENV
+#virtualenv ENV
+fi
+#. ENV/bin/activate
 cd $CWD/$PJPDIR/pjsip-apps/src/python
-python setup.py install
+sudo $CWD/ENV/bin/python3 setup.py install
