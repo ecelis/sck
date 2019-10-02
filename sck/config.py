@@ -43,10 +43,10 @@ def get_speedial():
 
 try:
     config = ConfigParser.RawConfigParser()
-    config.readfp(open('config.ini'))
-    config.read([os.path.expanduser('/etc/sck/config.ini'),
-                 os.path.expanduser('~/sck/config.ini'),
-                 os.path.dirname(os.path.realpath(__file__)) + '/config.ini']
+    #config.readfp(open('config.ini'))
+    config.read([os.path.expanduser('~/.config/sck/config.ini'),
+                 os.path.dirname(os.path.realpath(__file__)) + '/config.ini',
+                 os.path.expanduser('/etc/sck/config.ini')]
                 )
 
 except:

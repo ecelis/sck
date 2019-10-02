@@ -79,7 +79,7 @@ case "${OS}" in
       jack-audio-connection-kit-devel \
       libao libao-devel
   ;;
-  Debian*)
+  Debian*|Ubuntu*)
     sudo apt-get -yqq update && sudo apt-get -yqq dist-upgrade
     sudo apt-get -yqq install python3-venv build-essential
     sudo apt-get -yqq install \

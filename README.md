@@ -1,20 +1,19 @@
-Sauron-OS Communications Kit
-============================
+SOS Communications Kit
+======================
 
-Built on top of pjsua library, SCK aims to provide VoIP capabilities to
-Citizenship's Towers System. It is a SIP client writen in python for a
-very specific purpose. Runs right in the command line without need
-for any graphic desktop environment. Designed to run on Unix like
-(mainly GNU/Linux) embedded systems, SCK uses the operating system
-log capabilities.
+Built on top of [PJSIP](https://www.pjsip.org/)library, SCK was born to
+provide VoIP capabilities to a system of "panic buttons" deployed across
+town. Valk Technologies was the first sponsor of this project, as a
+command line SIP client was needed. It was developed to run on GNU/Linux
+systems on PC and embedded SoCs (Cubieboard 2 and Cubietruck).
 
-Copyright 2013 Ernesto Celis, this software is released under the
+It is a Command Line SIP client written in Python 2.
+
+Copyright 2013 - 2019 Ernesto Celis, this software is released under the
 terms of the GNU Public License version 3
 
-SCK relies on third party softwre libraries which may be released
-under diferent license terms, read the COPY file to get more info.
-
-SCK is sponsored by [Valk Technologies](http://valktechnologies.com/)
+SCK relies on third party software libraries which may be released
+under different license terms, read the COPY file to get more info.
 
 
 Features
@@ -53,7 +52,7 @@ Video dependencies (optional if you don't need video support)
 * libx264
 * libz
 
-On RHEL/CentOS 7 install dependencies by runnning:
+On RHEL/CentOS 7 install dependencies by running:
 
 
     yum -y install alsa-lib alsa-lib-devel openssl openssl-devel \
@@ -108,7 +107,3 @@ Run
     python vephone.py
 
 
-Enjoy!
-Ernesto Celis
-
-P.S. Thank you Teluu Ltd. for the great [pjsip/pjsua](http://www.pjsip.org/) libraries!
