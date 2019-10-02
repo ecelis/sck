@@ -13,7 +13,7 @@ Copyright 2013 - 2019 Ernesto Celis, this software is released under the
 terms of the GNU Public License version 3
 
 SCK relies on third party software libraries which may be released
-under different license terms, read the COPY file to get more info.
+under different license terms, read the COPYNG file to get more info.
 
 
 Features
