@@ -24,58 +24,42 @@ VIDEO=${VIDEO:-1}
 CLEAN=${CLEAN:-1}
 SCKDIR=$HOME/sck
 
-echo OS detection
-case "$OSTYPE" in
-  linux*)
-    MAKECMD=make
+if [[ $OSTYPE -eq "linux-gnu" ]] ; then
+ echo "Linux build"
+  MAKECMD=make
+else
+  MAKECMD=gmake
+fi
+cd $BASEDIR/$PJPDIR
+if [[ $CLEAN == 1 ]] ; then
+  $MAKECMD distclean
+fi
+if [[ $VIDEO == 1 ]] ; then
+  ./configure --prefix=$SCKDIR
+else
+  ./configure --prefix=$SCKDIR --disable-video --disable-ffmpeg --disable-v4l2
+fi
+echo $?
+## These flasg might not be required anymore
+CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" $MAKECMD dep
+CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" $MAKECMD
+if [[ $? -eq 0 ]] ; then
+  $MAKECMD dep
+  if [[ $? -eq 0 ]] ; then
+    $MAKECMD
     echo
-    echo ===> $OSTYPE setup
-    echo
-    ;;
-  *bsd*)
-  darwin*)
-    MAKECMD=gmake
-    echo
-    echo ===> $OSTYPE setup
-    echo
-    ;;
-  *)
-    MAKECMD=make
-    echo
-    echo ===> Generic setup
-    echo
-    ;;
-esac
-# cd $BASEDIR/$PJPDIR
-# if [[ $CLEAN == 1 ]] ; then
-#   $MAKECMD distclean
-# fi
-# if [[ $VIDEO == 1 ]] ; then
-#   ./configure --prefix=$SCKDIR
-# else
-#   ./configure --prefix=$SCKDIR --disable-video --disable-ffmpeg --disable-v4l2
-# fi
-# echo $?
-# ## These flasg might not be required anymore
-# CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" $MAKECMD dep
-# CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" $MAKECMD
-# if [[ $? -eq 0 ]] ; then
-#   $MAKECMD dep
-#   if [[ $? -eq 0 ]] ; then
-#     $MAKECMD
-#     echo
-#     echo READY TO INSTALL
-#     if [[ $? -eq 0 ]] ; then
-#       mkdir -p $SCKDIR
-#       sudo $MAKECMD install
-#       cd $BASEDIR
-#       if [[ $CLEAN == 1 ]] ; then
-#         rm -rf $SCKDIR
-#       fi
-#       python -m venv $SCKDIR 
-#       source $SCKDIR/bin/activate
-#       cd $BASEDIR/$PJPDIR/pjsip-apps/src/python
-#       $SCKDIR/bin/python3 setup.py install
-#     fi
-#   fi
-# fi
+    echo READY TO INSTALL
+    if [[ $? -eq 0 ]] ; then
+      mkdir -p $SCKDIR
+      sudo $MAKECMD install
+      cd $BASEDIR
+      if [[ $CLEAN == 1 ]] ; then
+        rm -rf $SCKDIR
+      fi
+      python -m venv $SCKDIR 
+      source $SCKDIR/bin/activate
+      cd $BASEDIR/$PJPDIR/pjsip-apps/src/python
+      $SCKDIR/bin/python3 setup.py install
+    fi
+  fi
+fi
