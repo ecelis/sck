@@ -49,20 +49,11 @@ Video dependencies (optional if you don't need video support)
 * libx264
 * libz
 
-On RHEL/CentOS 7 install dependencies by running:
+### Ubuntu 22.04 LTS
 
-
-    yum -y install alsa-lib alsa-lib-devel openssl openssl-devel \
-      ffmpeg ffmpeg-devel x264 x264-devel libv4l libv4l-devel \
-      SDL2 SDL2-devel
-
-
-### RHEL/CentOS 7 build
-
-
-    ./build.sh
-
-
+```bash
+./build.sh
+```
 ### Manual build
 
 Audio only (no video support)

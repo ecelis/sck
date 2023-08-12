@@ -54,7 +54,7 @@ if [[ $? -eq 0 ]] ; then
       python -m venv $SCKDIR 
       source $SCKDIR/bin/activate
       cd $BASEDIR/$PJPDIR/pjsip-apps/src/python
-      $SCKDIR/bin/python3 setup.py install
+      $BASEDIR/$SCKDIR/bin/python3 setup.py install
     fi
   fi
 fi
