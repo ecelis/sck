@@ -24,17 +24,18 @@ VIDEO=${VIDEO:-1}
 CLEAN=${CLEAN:-1}
 SCKDIR=$HOME/sck
 
-case $OSTYPE in
-  "linux*")
+case "$OSTYPE" in
+  linux*)
     MAKECMD=make
     echo
-    echo ===> Linux setup
+    echo ===> $OSTYPE setup
     echo
     ;;
-  "*bsd*" || "darwin*")
+  *bsd*)
+  darwin*)
     MAKECMD=gmake
     echo
-    echo ===> BSD setup
+    echo ===> $OSTYPE setup
     echo
     ;;
   *)
