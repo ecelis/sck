@@ -24,7 +24,22 @@ VIDEO=${VIDEO:-1}
 CLEAN=${CLEAN:-1}
 SCKDIR=$HOME/sck
 
-
+case $OSTYPE in
+  "linux*")
+    MAKECMD=make
+    echo
+    echo ===> Linux setup
+    echo
+    ;;
+  "*bsd*" || "darwin*")
+    MAKECMD=gmake
+    echo
+    echo ===> BSD setup
+    echo
+    ;;
+  *)
+    MAKECMD=make
+esac
 cd $BASEDIR/$PJPDIR
 if [[ $CLEAN == 1 ]] ; then
   make distclean
