@@ -24,7 +24,7 @@ VIDEO=${VIDEO:-1}
 CLEAN=${CLEAN:-1}
 SCKDIR=$HOME/sck
 
-if [[ $OSTYPE -eq "linux-gnu" ]] ; then
+if [[ $OSTYPE == "linux-gnu" ]] ; then
  echo "Linux build"
   MAKECMD=make
 else
