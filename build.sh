@@ -39,6 +39,10 @@ case $OSTYPE in
     ;;
   *)
     MAKECMD=make
+    echo
+    echo ===> Generic setup
+    echo
+    ;;
 esac
 cd $BASEDIR/$PJPDIR
 if [[ $CLEAN == 1 ]] ; then
