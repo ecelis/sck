@@ -51,6 +51,16 @@ Video dependencies (optional if you don't need video support)
 
 ### Ubuntu 22.04 LTS
 
+#### Dependencies
+
+```bash
+sudo apt update
+sudo apt install build-essential python3-dev python3-venv swig \
+    libssl3 libssl-dev ffmpeg libv4l-dev libv4l-0
+```
+
+#### Build
+
 ```bash
 ./build.sh
 ```

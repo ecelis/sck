@@ -25,3 +25,5 @@ third_party/pjproject-2.4.5/pjnath/lib/
 third_party/pjproject-2.4.5/pjsip/include/pjsip/sip_autoconf.h
 third_party/pjproject-2.4.5/pjsip/lib/
 third_party/pjproject-2.4.5/third_party/lib/
+third_party/pjproject-2.13.1/pjsip-apps/src/swig/python/dist/
+third_party/pjproject-2.13.1/pjsip-apps/src/swig/python/pjsua2.egg-info/

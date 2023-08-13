@@ -30,35 +30,35 @@ if [[ $OSTYPE == "linux-gnu" ]] ; then
 else
   MAKECMD=gmake
 fi
+
 cd $BASEDIR/$PJPDIR
+
 if [[ $CLEAN == 1 ]] ; then
   $MAKECMD distclean
 fi
+
 if [[ $VIDEO == 1 ]] ; then
   ./configure --prefix=$SCKDIR
 else
   ./configure --prefix=$SCKDIR --disable-video --disable-ffmpeg --disable-v4l2
 fi
-echo $?
-## These flasg might not be required anymore
-CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" $MAKECMD dep
-CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" $MAKECMD
+
 if [[ $? -eq 0 ]] ; then
-  $MAKECMD dep
+  CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" $MAKECMD dep
   if [[ $? -eq 0 ]] ; then
-    $MAKECMD
+    CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" $MAKECMD
     echo
     echo READY TO INSTALL
     if [[ $? -eq 0 ]] ; then
-      mkdir -p $SCKDIR
-      sudo $MAKECMD install
-      cd $BASEDIR
       if [[ $CLEAN == 1 ]] ; then
         rm -rf $SCKDIR
       fi
-      python -m venv $SCKDIR 
+      python3 -m venv $SCKDIR 
       source $SCKDIR/bin/activate
-      cd $BASEDIR/$PJPDIR/pjsip-apps/src/python
+      $MAKECMD install
+      cd $BASEDIR/$PJPDIR/pjsip-apps/src/swig/python
+      CFLAGS="-fPIC -O2" CXXFLAGS="-fPIC" $MAKECMD
+      $MAKECMD install
       $SCKDIR/bin/python3 setup.py install
     fi
   fi
