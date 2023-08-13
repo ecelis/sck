@@ -56,7 +56,9 @@ Video dependencies (optional if you don't need video support)
 ```bash
 sudo apt update
 sudo apt install build-essential python3-dev python3-venv swig \
-    libssl3 libssl-dev ffmpeg libv4l-dev libv4l-0
+    libssl3 libssl-dev ffmpeg libv4l-dev libv4l-0 \
+    alsa-base alsa-oss libyuv0 libyuv-dev libsdl2-2.0-0 libsdl2-dev \
+    libx264-163  libx264-dev
 ```
 
 #### Build
