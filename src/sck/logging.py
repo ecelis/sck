@@ -1,5 +1,5 @@
 """
-This file is part of Simple Communications Kit (SCK).
+Simple Communications Kit (SCK).
 
 Copyright 2013 - 2023 Ernesto Celis
 
@@ -16,21 +16,19 @@ Copyright 2013 - 2023 Ernesto Celis
 # You should have received a copy of the GNU General Public License
 # along with SCK.  If not, see <https://www.gnu.org/licenses/>.
 """
-import pjsua2 as pj
+
+import logging
+from sck.settings import Config
 
 
-class Endpoint(pj.Endpoint):
-    """Python object inherited from pj.Endpoint"""
-    _instance = None
+class Logging():
+    """SCK Logger"""
 
-    def __init__(self):
-        pj.Endpoint.__init__(self)
-        Endpoint._instance = self
+    def __init__(self) -> None:
+        self.logging = logging
+        config = Config()
+        self.logging.basicConfig(level=config.log_level)
 
-    def validate_uri(self, uri):
-        """Check for a valid URI"""
-        return Endpoint._instance.utilVerifyUri(uri) == pj.PJ_SUCCESS
-
-    def validate_sip_uri(self, uri):
-        """ Check valid SIP URI"""
-        return Endpoint._instance.utilVerifySipUri(uri) == pj.PJ_SUCCESS
+    def get_logger(self):
+        """Return logger instance"""
+        return self.logging.getLogger(__name__)

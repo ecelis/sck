@@ -19,16 +19,21 @@ Copyright 2013 - 2023 Ernesto Celis
 
 import sys
 import pjsua2 as pj
-from sck.settings import AppConfig, Config
 import sck.getchar as get_char
 # import sck.wiringcb as wiringcb
 import sck.gpio_api as gpio_api
 from sck.endpoint import Endpoint
+from sck.logging import Logging
+from sck.settings import AppConfig, Config
 
 
 class Application():
     """Main SCK Application class"""
+
     def __init__(self, config, read_input) -> None:
+        self.loging = Logging()
+        log = self.get_logger()
+        log.info('App init')
         # Instantiate endpoint
         self.ep = Endpoint()
         self.ep.libCreate()
@@ -43,7 +48,17 @@ class Application():
         # self.appConfig.epConfig.logConfig.level = 5
         # self.appConfig.epConfig.logConfig.consoleLevel = 5
 
+        # Initialize library
+        _ua = "sck-" + self.ep.libVersion().full
+        self.app_config.epConfig.uaConfig.userAgent = _ua
+        self.ep.libInit(self.app_config.epConfig)
+
+    def get_logger(self):
+        """Grab the logger instance"""
+        return self.loging.get_logger()
+
     def start(self):
+        """Launch SCK"""
         print('Ignition!')
 
 

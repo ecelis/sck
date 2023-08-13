@@ -33,7 +33,8 @@ class Config():
             cls._instance.config.read(
                 [
                     os.path.expanduser('~/.config/sck/config.ini'),
-                    os.path.dirname(os.path.realpath(__file__)) + '/config.ini',
+                    os.path.dirname(
+                        os.path.realpath(__file__)) + '/config.ini',
                     os.path.expanduser('/etc/sck/config.ini')
                     ]
                     )
@@ -75,23 +76,24 @@ class Config():
 class SipTransportConfig:
     """Transport setting"""
 
-    def __init__(self, type, enabled):
+    def __init__(self, sip_type, enabled):
         # pj.PersistentObject.__init__(self)
-        self.type = type
+        self.sip_type = sip_type
         self.enabled = enabled
         self.config = pj.TransportConfig()
 
     def readObject(self, node):
         child_node = node.readContainer("SipTransport")
-        self.type = child_node.readInt("type")
+        self.sip_type = child_node.readInt("sip_type")
         self.enabled = child_node.readBool("enabled")
         self.config.readObject(child_node)
 
     def writeObject(self, node):
         child_node = node.writeNewContainer("SipTransport")
-        child_node.writeInt("type", self.type)
+        child_node.writeInt("type", self.sip_type)
         child_node.writeBool("enabled", self.enabled)
         self.config.writeObject(child_node)
+
 
 class AccConfig:
     """Account setting with buddy list"""
@@ -124,7 +126,7 @@ class AppConfig:
     """Master settings"""
 
     def __init__(self):
-        self.epConfig = pj.EpConfig()	# pj.EpConfig()
+        self.epConfig = pj.EpConfig() 	# pj.EpConfig()
         self.udp = SipTransportConfig(pj.PJSIP_TRANSPORT_UDP, True)
         self.tcp = SipTransportConfig(pj.PJSIP_TRANSPORT_TCP, True)
         self.tls = SipTransportConfig(pj.PJSIP_TRANSPORT_TLS, False)
@@ -148,7 +150,7 @@ class AppConfig:
             acfg = AccConfig()
             acfg.readObject(acc_node)
             self.accounts.append(acfg)
-                    
+
     def saveFile(self, file):
         json = pj.JsonDocument()
 
@@ -165,5 +167,5 @@ class AppConfig:
         node = json.writeNewArray("accounts")
         for acc in self.accounts:
             acc.writeObject(node)
-                
+
         json.saveFile(file)
