@@ -15,13 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with SCK.  If not, see <https://www.gnu.org/licenses/>.
 
+import sys
+import tty
+import termios
+# import msvcrt
+
 
 class _GetchUnix:
-    def __init__(self):
-        import tty, sys
-
     def __call__(self):
-        import sys, tty, termios
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
         try:
@@ -32,29 +33,26 @@ class _GetchUnix:
         return ch
 
 
-"""Gets a single character from standard input.  Does not echo to the
-screen."""
-class read_input:
+class ReadInput:
+    """Gets a single character from standard input.  Does not echo to the
+    screen."""
     def __init__(self):
         try:
-            self.impl = _GetchWindows()
+            self.impl = None  # _GetchWindows()
         except ImportError:
             self.impl = _GetchUnix()
 
     def __call__(self):
-	return self.impl()
+        return self.impl()
 
 
-"""
-Maybe I'll never use the windows class, but still useful to get it
-in here, just in case, taken from:
-http://code.activestate.com/recipes/134892-getch-like-unbuffered-character-reading-from-stdin/
-The site states the license as PSF
-"""
-class _GetchWindows:
-    def __init__(self):
-        import msvcrt
+# class _GetchWindows:
+#     """
+#     Maybe I'll never use the windows class, but still useful to get it
+#     in here, just in case, taken from:
+#     http://code.activestate.com/recipes/134892-getch-like-unbuffered-character-reading-from-stdin/
+#     The site states the license as PSF
+#     """
 
-    def __call__(self):
-        import msvcrt
-        return msvcrt.getch()
+#     def __call__(self):
+#         return msvcrt.getch()

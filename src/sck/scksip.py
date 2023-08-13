@@ -1,6 +1,7 @@
-# Copyright 2013 - 2019 Ernesto Celis
+"""
+scksip is part of Simple Communications Kit (SCK).
 
-# This file is part of SOS Communications Kit (SCK).
+Copyright 2013 - 2023 Ernesto Celis
 
 # SCK is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,6 +15,7 @@
 
 # You should have received a copy of the GNU General Public License
 # along with SCK.  If not, see <https://www.gnu.org/licenses/>.
+"""
 
 import sys
 import pjsua as pj

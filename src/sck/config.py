@@ -41,10 +41,18 @@ class Config():
 
     def __init__(self):
         self.config = self._instance.get_config()
+        self.flavor = ['pc', 'cb2', 'ct']
+        self.digt = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        self.pinout = ['ext1', 'ext2', 'ext3', 'ext4', 'ext5', 'siren', 'spk']
+        self.log_level = 3
 
-    def set_config(self, config):
+    def set_config(self, config: configparser.ConfigParser):
         """Set the config parser"""
         self.config = config
+
+    def set_log_level(self, level: int):
+        """Set the log level, 1, 2 or 3 less to more verbose"""
+        self.log_level = level
 
     def get_config(self):
         """Set the config parser"""
