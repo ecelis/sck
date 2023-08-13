@@ -1,23 +1,21 @@
-SOS Communications Kit
-======================
+# Simple Communications Kit
 
-Built on top of [PJSIP](https://www.pjsip.org/)library, SCK was born to
-provide VoIP capabilities to a system of "panic buttons" deployed across
-town. Valk Technologies was the first sponsor of this project, as a
-command line SIP client was needed. It was developed to run on GNU/Linux
-systems on PC and embedded SoCs (Cubieboard 2 and Cubietruck).
+Is a command line SIP client written in Python.
 
-It is a Command Line SIP client written in Python 2.
+Built on top of [PJSIP](https://www.pjsip.org/) library, SCK was designed to
+enable VoIP for a system of _panic buttons_ deployed across
+town. Valk Technologies was the first sponsor of this project, as the company required a
+command line SIP client to run in Linux
+systems for PC and embedded SoCs (Cubieboard 2 and Cubietruck).
 
-Copyright 2013 - 2019 Ernesto Celis, this software is released under the
+Copyright 2013 - 2023 Ernesto Celis, this software is released under the
 terms of the GNU Public License version 3
 
 SCK relies on third party software libraries which may be released
 under different license terms, read the COPYNG file to get more info.
 
 
-Features
---------
+## Features
 
 * Auto-answer
 * Fixed set of extension numbers to dial
@@ -27,15 +25,14 @@ Features
 * Plain text config file
 
 
-Install
--------
+## Install
 
 The only thing that needs to be installed is the pjsua python module, as
 it is not available as a binary package in none of the two GNU/Linux
 distributions I'm working on, I've included a copy of pjproject
 version 2.4.5
 
-#### Dependencies
+### Dependencies
 
 Audio dependencies
 
@@ -52,20 +49,23 @@ Video dependencies (optional if you don't need video support)
 * libx264
 * libz
 
-On RHEL/CentOS 7 install dependencies by running:
+### Ubuntu 22.04 LTS
 
+#### Dependencies
 
-    yum -y install alsa-lib alsa-lib-devel openssl openssl-devel \
-      ffmpeg ffmpeg-devel x264 x264-devel libv4l libv4l-devel \
-      SDL2 SDL2-devel
+```bash
+sudo apt update
+sudo apt install build-essential python3-dev python3-venv swig \
+    libssl3 libssl-dev ffmpeg libv4l-dev libv4l-0 \
+    alsa-base alsa-oss libyuv0 libyuv-dev libsdl2-2.0-0 libsdl2-dev \
+    libx264-163  libx264-dev
+```
 
+#### Build
 
-### RHEL/CentOS 7 build
-
-
-    ./build.sh
-
-
+```bash
+./build.sh
+```
 ### Manual build
 
 Audio only (no video support)
@@ -89,8 +89,7 @@ With video support
     cd pjsip-apps/src/python python setup.py install
 
 
-Configure
----------
+### Configure
 
 Copy the file `sck/ve-phone/config.ini.orig` either to `~/config.ini` or
 `~/settings/config.ini` or `sck/ve-phone/config.ini`
@@ -99,11 +98,8 @@ Edit the file filling in your PBX username and password, speed dial
 extension numbers and audio settings for your sound card if needed
 
 
-Run
----
+### Run
 
 
     cd sck/ve-phone
     python vephone.py
-
-
