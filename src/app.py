@@ -53,6 +53,17 @@ class Application():
         self.app_config.epConfig.uaConfig.userAgent = _ua
         self.ep.libInit(self.app_config.epConfig)
 
+        # Create transports
+        if self.app_config.udp.enabled:
+            self.ep.transportCreate(self.app_config.udp.sip_type,
+                                    self.app_config.udp.config)
+        if self.app_config.tcp.enabled:
+            self.ep.transportCreate(self.app_config.tcp.sip_type,
+                                    self.app_config.tcp.config)
+        if self.app_config.tls.enabled:
+            self.ep.transportCreate(self.app_config.tls.sip_type,
+                                    self.app_config.tls.config)
+
     def get_logger(self):
         """Grab the logger instance"""
         return self.loging.get_logger()
