@@ -14,9 +14,9 @@
 
 # You should have received a copy of the GNU General Public License
 # along with SCK.  If not, see <https://www.gnu.org/licenses/>.
-import ConfigParser
 from syslog import syslog as logger
 from syslog import LOG_ERR
+from sck.config import Config
 
 INPUT = 0
 OUTPUT = 1
@@ -32,7 +32,7 @@ HIGH = 1
 
 def get_ports():
     try:
-        config = ConfigParser.ConfigParser()
+        config = Config().get_config()
         config.readfp(open('exports.ini'))
         #TODO It could be a RawConfigParser to get the whole dictionary from cfg
         return dict([

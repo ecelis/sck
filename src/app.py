@@ -20,26 +20,29 @@ Copyright 2013 - 2023 Ernesto Celis
 import sys
 from sck.config import Config
 import sck.getchar as get_char
-import sck.wiringcb as wiringcb
+# import sck.wiringcb as wiringcb
 import sck.gpio_api as gpio_api
 
 
 def main() -> int:
     """Start SCK"""
+    print("eloh")
     config = Config()
-    machine = config.get_flavor()
+    hardware = config.get_flavor()
     if_read = None
-    if machine in config.flavor:
-        if machine == 'pc':
+    if hardware in config.flavor:
+        if hardware == 'pc':
             if_input = get_char
-        elif machine == 'cb2':
-            if_input = wiringcb
-        elif machine == 'ct':
+        # elif machine == 'cb2':
+        #     if_input = wiringcb
+        elif hardware == 'ct':
             if_input = gpio_api
         if_read = if_input.ReadInput()
     else:
         # TODO log err
+        print('OMG!')
         return -1
+    print('Bye!')
     return 0
 
 
