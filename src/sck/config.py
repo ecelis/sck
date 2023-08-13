@@ -28,9 +28,8 @@ class Config():
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(Config, cls).__new__(cls)
-            cfg = configparser.ConfigParser()
-            cls._instance.config = cfg
-            cfg.read(
+            cls._instance.set_config(configparser.ConfigParser())
+            cls._instance.config.read(
                 [
                     os.path.expanduser('~/.config/sck/config.ini'),
                     os.path.dirname(os.path.realpath(__file__)) + '/config.ini',
@@ -41,7 +40,15 @@ class Config():
         return cls._instance
 
     def __init__(self):
-        self.config = None
+        self.config = self._instance.get_config()
+
+    def set_config(self, config):
+        """Set the config parser"""
+        self.config = config
+
+    def get_config(self):
+        """Set the config parser"""
+        return self.config
 
     def get_flavor(self):
         """Return hardware architecture configuration"""
