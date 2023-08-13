@@ -18,10 +18,33 @@ Copyright 2013 - 2023 Ernesto Celis
 """
 
 import sys
-from sck.config import Config
+import pjsua2 as pj
+from sck.settings import AppConfig, Config
 import sck.getchar as get_char
 # import sck.wiringcb as wiringcb
 import sck.gpio_api as gpio_api
+from sck.endpoint import Endpoint
+
+
+class Application():
+    """Main SCK Application class"""
+    def __init__(self, config, read_input) -> None:
+        # Instantiate endpoint
+        self.ep = Endpoint()
+        self.ep.libCreate()
+
+        # Default config
+        self.app_config = AppConfig()
+        self.app_config.epConfig.uaConfig.threadCnt = 1
+        self.app_config.epConfig.uaConfig.mainThreadOnly = False
+        # self.appConfig.epConfig.logConfig.writer = self.logger
+        # self.appConfig.epConfig.logConfig.filename = "sck.log"
+        # self.appConfig.epConfig.logConfig.fileFlags = pj.PJ_O_APPEND
+        # self.appConfig.epConfig.logConfig.level = 5
+        # self.appConfig.epConfig.logConfig.consoleLevel = 5
+
+    def start(self):
+        print('Ignition!')
 
 
 def main() -> int:
@@ -38,6 +61,8 @@ def main() -> int:
         elif hardware == 'ct':
             if_input = gpio_api
         if_read = if_input.ReadInput()
+        app = Application(config, if_read)
+        app.start()
     else:
         # TODO log err
         print('OMG!')

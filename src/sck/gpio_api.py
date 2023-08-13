@@ -16,7 +16,7 @@
 # along with SCK.  If not, see <https://www.gnu.org/licenses/>.
 from syslog import syslog as logger
 from syslog import LOG_ERR
-from sck.config import Config
+from sck.settings import Config
 
 INPUT = 0
 OUTPUT = 1

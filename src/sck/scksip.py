@@ -23,7 +23,7 @@ import threading
 from syslog import syslog as logger
 from syslog import LOG_INFO
 from syslog import LOG_ERR
-import config
+import sck.settings as settings
 
 # Global stuff
 FLAVORS = ['pc', 'cb2', 'ct']
@@ -33,7 +33,7 @@ LOG_LEVEL = 3
 call_in_progress = None
 
 # Detect hardware, supported flavors are PC, Cubieboard 2 and Cubietruck
-_hardware = config.get_flavor()
+_hardware = settings.get_flavor()
 logger(LOG_INFO, u'SCK Running with ' + _hardware + ' settings')
 if _hardware in FLAVORS:
     if _hardware == 'pc':
@@ -236,8 +236,8 @@ class CallCallback(pj.CallCallback):
 
 
 try:
-    sipcfg = config.get_sipcfg()        # Get PBX/SIP auth credentials
-    speedial = config.get_speedial()    # Get Speed Dial Extensions
+    sipcfg = settings.get_sipcfg()        # Get PBX/SIP auth credentials
+    speedial = settings.get_speedial()    # Get Speed Dial Extensions
     media = pj.MediaConfig()            # Media Config
     media.ec_options = 0                # pjsua default 0
     media.ec_tail_len = 256             # pjsua default 256
